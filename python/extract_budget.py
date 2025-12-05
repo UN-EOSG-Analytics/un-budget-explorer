@@ -108,14 +108,26 @@ def clean_table6():
     return df
 
 
+def parse_paragraph(text):
+    """Parse paragraph prefix and determine hierarchy level."""
+    patterns = [
+        (r'^(\d+)\.\t(.+)$', 0),           # "92.\t..." → level 0
+        (r'^\(([ivx]+)\)\t(.+)$', 2),      # "(i)\t..." → level 2 (roman numerals, check first)
+        (r'^\(([a-z])\)\t(.+)$', 1),       # "(a)\t..." → level 1 (letters)
+    ]
+    for pat, level in patterns:
+        m = re.match(pat, text, re.DOTALL)
+        if m:
+            return {'prefix': m.group(1), 'level': level, 'text': m.group(2)}
+    return {'prefix': None, 'level': None, 'text': text}
+
 def extract_entity_narratives():
     """Extract narrative paragraphs for each entity in Chapter IV.B."""
     doc = Document("data/input/A_80_400.DOCX")
     sections = []
     current = None
     
-    for i, p in enumerate(doc.paragraphs[424:2448]):
-        idx = i + 424
+    for p in doc.paragraphs[424:2448]:
         text = p.text.strip()
         m = re.match(r'^(\d+)\.\s+Section\s+(\d+[A-Z]?),\s+(.+)$', text)
         if m:
@@ -123,7 +135,7 @@ def extract_entity_narratives():
                 sections.append(current)
             current = {'num': int(m.group(1)), 'section': m.group(2), 'entity': m.group(3).strip(), 'narratives': []}
         elif current and p.style.name == '__Single Txt' and len(text) > 50:
-            current['narratives'].append(text)
+            current['narratives'].append(parse_paragraph(text))
     if current:
         sections.append(current)
     
