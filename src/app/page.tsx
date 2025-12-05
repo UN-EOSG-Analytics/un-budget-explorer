@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState, useEffect, useMemo } from 'react';
 import BudgetTreemap from '@/components/BudgetTreemap';
+import BudgetLollipop from '@/components/BudgetLollipop';
 import EntityModal from '@/components/EntityModal';
 import { BudgetItem, TreemapPart, TreemapSection, TreemapEntity } from '@/types';
 
@@ -166,20 +167,22 @@ export default function Home() {
         {/* Intro Section */}
         <section className="mb-8">
           <p className="text-gray-700 leading-relaxed max-w-3xl">
-            This visualization is based on the{" "}
+            For additional details consult the source document of the{" "}
             <a 
               href="https://documents.un.org/symbol-explorer?s=A/80/400&i=A/80/400_1759797069261"
               target="_blank"
               rel="noopener noreferrer"
               className="text-un-blue hover:underline"
             >
-              revised estimates relating to the proposed programme budget for 2026 (A/80/400).
+              Revised Estimates 2026 (A/80/400).
             </a>
           </p>
         </section>
 
         {/* Treemap Section */}
         <section className="mb-16">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Budget Overview According to Revised Estimates 2026</h2>
+          <p className="text-sm text-gray-600 mb-6">Area represents 2026 revised estimate. Click on any entity for details.</p>
           {loading ? (
             <div className="h-[1200px] flex items-center justify-center">
               <div className="text-gray-500">Loading budget data...</div>
@@ -191,6 +194,13 @@ export default function Home() {
             />
           )}
         </section>
+
+        {/* Lollipop Chart Section */}
+        {!loading && budgetData.length > 0 && (
+          <section className="mb-16">
+            <BudgetLollipop budgetData={budgetData} onEntityClick={setSelectedEntity} />
+          </section>
+        )}
       </main>
 
       {/* Modal */}
