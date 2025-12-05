@@ -77,10 +77,12 @@ def clean_table6():
     # extract footnote markers before cleaning (from numeric cols + entity name)
     df['footnotes'] = df[numeric_cols].apply(lambda row: ''.join(sorted(set(''.join(row.dropna().astype(str).str.extract(r'([a-z]+)$', expand=False).dropna())))), axis=1)
     df['footnotes'] = (df['_entity_fn'].fillna('') + df['footnotes']).apply(lambda x: ''.join(sorted(set(x))) or pd.NA)
-    # clean numeric columns for ALL rows first
+    # clean numeric columns for ALL rows first (values are in thousands in source)
     for c in numeric_cols:
         df[c] = df[c].replace('–', '0').str.replace(r'[\s,]', '', regex=True).str.replace(r'\((.+)\)[a-z]*', r'-\1', regex=True).str.replace(r'[a-z]+$', '', regex=True)
         df[c] = pd.to_numeric(df[c], errors='coerce')
+        if 'percentage' not in c.lower():
+            df[c] = df[c] * 1000  # convert from thousands to actual values
     # extract grand total after cleaning, before filtering
     grand_total = df[df[col] == 'Total'][numeric_cols].iloc[0]
     df = df[~is_part_header & ~df[col].isin(['–\tOther', 'Total']) & df['2025 approved'].notna()]
