@@ -137,23 +137,80 @@ def parse_paragraph(text):
             return {'prefix': m.group(1), 'level': level, 'text': m.group(2)}
     return {'prefix': None, 'level': None, 'text': text}
 
-def extract_entity_narratives():
-    """Extract narrative paragraphs for each entity in Chapter IV.B."""
+def extract_resource_table(tbl):
+    """Extract resource changes table data."""
+    if len(tbl.rows) < 4:
+        return None
+    headers = [c.text.strip() for c in tbl.rows[1].cells]
+    rows = []
+    in_transitional = False
+    for row in tbl.rows[3:]:
+        cells = [c.text.strip() for c in row.cells]
+        label = cells[0].lower() if cells[0] else ''
+        # Skip empty rows, variance rows, subtotals, and totals
+        if not cells[0] or 'variance' in label or 'subtotal' in label or label == 'total':
+            continue
+        # Check for transitional section header (has empty numeric values)
+        if 'transitional' in label and all(c in ['', '–', '0'] for c in cells[1:]):
+            in_transitional = True
+            continue
+        # Clean numeric values
+        clean_label = f"Transitional: {cells[0]}" if in_transitional else cells[0]
+        clean = [clean_label]
+        for v in cells[1:]:
+            v = v.replace('\xa0', '').replace(' ', '').replace(',', '').replace('–', '0')
+            v = re.sub(r'\((.+)\)', r'-\1', v)  # (123) → -123
+            clean.append(v)
+        rows.append(clean)
+    return {'headers': headers, 'rows': rows} if rows else None
+
+def extract_entity_details():
+    """Extract narrative paragraphs and resource tables for each entity in Chapter IV.B."""
+    from docx.oxml.ns import qn
     doc = Document("data/input/A_80_400.DOCX")
-    sections = []
-    current = None
+    body = doc.element.body
     
-    for p in doc.paragraphs[424:2448]:
-        text = p.text.strip()
-        m = re.match(r'^(\d+)\.\s+Section\s+(\d+[A-Z]?),\s+(.+)$', text)
-        if m:
-            if current:
-                sections.append(current)
-            current = {'num': int(m.group(1)), 'section': m.group(2), 'entity': m.group(3).strip(), 'narratives': []}
-        elif current and p.style.name == '__Single Txt' and len(text) > 50:
-            current['narratives'].append(parse_paragraph(text))
-    if current:
-        sections.append(current)
+    # Build sequence of body elements
+    elements = []
+    para_idx, table_idx = 0, 0
+    for elem in body:
+        if elem.tag == qn('w:p'):
+            elements.append(('para', para_idx, doc.paragraphs[para_idx].text.strip(), doc.paragraphs[para_idx].style.name))
+            para_idx += 1
+        elif elem.tag == qn('w:tbl'):
+            elements.append(('table', table_idx, '', ''))
+            table_idx += 1
+    
+    # Find entity sections and their content
+    entity_starts = []
+    for i, (typ, idx, text, style) in enumerate(elements):
+        if typ == 'para':
+            m = re.match(r'^(\d+)\.\s+Section\s+(\d+[A-Z]?),\s+(.+)$', text)
+            if m:
+                entity_starts.append((i, int(m.group(1)), m.group(2), m.group(3).strip()))
+    
+    sections = []
+    for j, (start_i, num, sec, name) in enumerate(entity_starts):
+        end_i = entity_starts[j+1][0] if j+1 < len(entity_starts) else len(elements)
+        entry = {'num': num, 'section': sec, 'entity': name, 'narratives': [], 'resource_table': None}
+        
+        for i in range(start_i, end_i):
+            typ, idx, text, style = elements[i]
+            if typ == 'para':
+                # Extract narratives
+                if style == '__Single Txt' and len(text) > 50:
+                    entry['narratives'].append(parse_paragraph(text))
+                # Find "Regular budget: proposed resource changes" table
+                if 'Regular budget: proposed resource changes by object of expenditure' in text:
+                    # Next table element is the resource table
+                    for k in range(i+1, min(i+5, end_i)):
+                        if elements[k][0] == 'table':
+                            tbl = doc.tables[elements[k][1]]
+                            first_cell = tbl.rows[0].cells[0].text.strip() if tbl.rows else ''
+                            if 'Object of expenditure' in first_cell or not first_cell:
+                                entry['resource_table'] = extract_resource_table(tbl)
+                            break
+        sections.append(entry)
     
     with open("data/intermediate/entity_narratives.json", "w", encoding="utf-8") as f:
         json.dump(sections, f, indent=2, ensure_ascii=False)
@@ -167,5 +224,5 @@ budget['chapter_title'] = budget['Entity name'].map(lambda x: name_map.get(x, x)
 budget.to_json("public/budget.json", orient="records", indent=2, force_ascii=False)
 
 # budget details based on later sections in the document
-paras = extract_entity_narratives()
+paras = extract_entity_details()
 json.dump(paras, Path("public/details.json").open("w"), indent=2, ensure_ascii=False)

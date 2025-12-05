@@ -1,6 +1,6 @@
 'use client';
 
-import { TreemapEntity, DetailItem, Narrative } from '@/types';
+import { TreemapEntity, DetailItem, Narrative, ResourceTable } from '@/types';
 import { formatMoney, formatVariance, getArrow } from '@/lib/format';
 import { X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -22,6 +22,7 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [narratives, setNarratives] = useState<Narrative[]>([]);
+  const [resourceTable, setResourceTable] = useState<ResourceTable | null>(null);
   const [loadingNarratives, setLoadingNarratives] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -45,8 +46,9 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
           d.entity === entity.budgetItem['Entity name']
         );
         setNarratives(match?.narratives || []);
+        setResourceTable(match?.resource_table || null);
       })
-      .catch(() => setNarratives([]))
+      .catch(() => { setNarratives([]); setResourceTable(null); })
       .finally(() => setLoadingNarratives(false));
   }, [entity]);
 
@@ -258,6 +260,121 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
               </div>
             )}
           </section>
+
+          {/* Resource Changes Chart */}
+          {resourceTable && resourceTable.rows.length > 0 && (() => {
+            const parseNum = (s: string) => parseFloat(s) || 0;
+            const rows = resourceTable.rows
+              .filter(r => !r[0].toLowerCase().includes('variance') && !r[0].toLowerCase().includes('total'))
+              .map(r => ({
+                label: r[0].replace(/^[IVX]+\.\t/, ''),
+                approved: parseNum(r[1]),
+                proposed: parseNum(r[2]),
+                consolidation: parseNum(r[3]),
+                other: parseNum(r[4]),
+                revised: parseNum(r[5]),
+              }));
+            const globalMax = Math.max(...rows.flatMap(r => [Math.abs(r.approved), Math.abs(r.proposed), Math.abs(r.revised)]));
+            const MAX_H = 40; // max height in pixels
+            const MIN_H = 8;  // min height in pixels
+            
+            return (
+              <section>
+                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">Resource Changes by Object</h3>
+                {/* Header */}
+                <div className="flex text-[10px] text-gray-500 mb-2">
+                  <div className="w-28 flex-shrink-0" />
+                  <div className="flex-1 grid grid-cols-5 gap-1 text-center items-end">
+                    <span>2025 Approved</span>
+                    <span>2026 Proposed</span>
+                    <span>Consolidation</span>
+                    <span>Other</span>
+                    <span>2026<br/>Revised</span>
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  {rows.map((row, i) => {
+                    // Row's max value determines its height
+                    const rowMax = Math.max(row.approved, row.proposed, row.revised);
+                    const rowH = Math.max(MIN_H, (rowMax / globalMax) * MAX_H);
+                    // Scale within this row (100% = rowMax)
+                    const scale = (v: number) => rowMax > 0 ? (v / rowMax) * 100 : 0;
+                    // Waterfall positions
+                    const afterConsol = row.proposed + row.consolidation;
+                    const consolTop = row.consolidation < 0 ? scale(afterConsol) : scale(row.proposed);
+                    const consolH = rowMax > 0 ? (Math.abs(row.consolidation) / rowMax) * 100 : 0;
+                    const afterOther = afterConsol + row.other;
+                    const otherTop = row.other < 0 ? scale(afterOther) : scale(afterConsol);
+                    const otherH = rowMax > 0 ? (Math.abs(row.other) / rowMax) * 100 : 0;
+                    
+                    return (
+                      <div key={i} className="flex items-center group relative">
+                        <div className="w-28 flex-shrink-0 text-[10px] truncate pr-2 text-gray-600" title={row.label}>
+                          {row.label}
+                        </div>
+                        <div className="flex-1 grid grid-cols-5 gap-1 relative" style={{ height: rowH }}>
+                          {/* 2025 Approved */}
+                          <div className="relative">
+                            <div className="absolute bottom-0 left-0 right-0 bg-gray-800 rounded" style={{ height: `${Math.max(2, scale(row.approved))}%` }} />
+                          </div>
+                          {/* 2026 Proposed */}
+                          <div className="relative">
+                            <div className="absolute bottom-0 left-0 right-0 bg-gray-400 rounded" style={{ height: `${Math.max(2, scale(row.proposed))}%` }} />
+                          </div>
+                          {/* Consolidation - waterfall positioned */}
+                          <div className="relative">
+                            {row.consolidation !== 0 ? (
+                              <div 
+                                className={`absolute left-0 right-0 rounded ${row.consolidation < 0 ? 'bg-red-500' : 'bg-green-500'}`} 
+                                style={{ bottom: `${consolTop}%`, height: `${Math.max(2, consolH)}%` }} 
+                              />
+                            ) : (
+                              <div className="absolute left-0 right-0 h-px bg-gray-300" style={{ bottom: `${scale(row.proposed)}%` }} />
+                            )}
+                          </div>
+                          {/* Other - waterfall positioned */}
+                          <div className="relative">
+                            {row.other !== 0 ? (
+                              <div 
+                                className={`absolute left-0 right-0 rounded ${row.other < 0 ? 'bg-red-500' : 'bg-green-500'}`} 
+                                style={{ bottom: `${otherTop}%`, height: `${Math.max(2, otherH)}%` }} 
+                              />
+                            ) : (
+                              <div className="absolute left-0 right-0 h-px bg-gray-300" style={{ bottom: `${scale(afterConsol)}%` }} />
+                            )}
+                          </div>
+                          {/* 2026 Revised */}
+                          <div className="relative">
+                            <div className="absolute bottom-0 left-0 right-0 bg-un-blue rounded" style={{ height: `${Math.max(2, scale(row.revised))}%` }} />
+                          </div>
+                        </div>
+                        {/* Tooltip */}
+                        <div className="absolute left-28 top-1/2 -translate-y-1/2 ml-2 bg-white border border-gray-200 rounded-lg px-3 py-2 shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none z-10">
+                          <p className="font-medium text-xs text-gray-900 mb-2">{row.label}</p>
+                          <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px]">
+                            <span className="text-gray-500">2025 Approved</span>
+                            <span className="text-right text-gray-900">{formatMoney(row.approved * 1000)}</span>
+                            <span className="text-gray-500">2026 Proposed</span>
+                            <span className="text-right text-gray-900">{formatMoney(row.proposed * 1000)}</span>
+                            <span className="text-gray-500">Consolidation</span>
+                            <span className={`text-right ${row.consolidation < 0 ? 'text-red-600' : row.consolidation > 0 ? 'text-green-600' : 'text-gray-400'}`}>
+                              {row.consolidation !== 0 ? `${getArrow(row.consolidation)}${formatMoney(Math.abs(row.consolidation) * 1000)}` : '—'}
+                            </span>
+                            <span className="text-gray-500">Other</span>
+                            <span className={`text-right ${row.other < 0 ? 'text-red-600' : row.other > 0 ? 'text-green-600' : 'text-gray-400'}`}>
+                              {row.other !== 0 ? `${getArrow(row.other)}${formatMoney(Math.abs(row.other) * 1000)}` : '—'}
+                            </span>
+                            <span className="text-gray-500 font-medium">2026 Revised</span>
+                            <span className="text-right text-un-blue font-medium">{formatMoney(row.revised * 1000)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })()}
 
           {/* Narratives */}
           <section>

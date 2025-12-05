@@ -25,11 +25,17 @@ export interface Narrative {
   text: string;
 }
 
+export interface ResourceTable {
+  headers: string[];
+  rows: string[][];
+}
+
 export interface DetailItem {
   num: number;
   section: string;
   entity: string;
   narratives: Narrative[];
+  resource_table: ResourceTable | null;
 }
 
 export interface TreemapEntity {
