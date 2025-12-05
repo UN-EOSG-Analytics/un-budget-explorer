@@ -20,21 +20,23 @@ const PART_COLORS: Record<string, { bg: string; hover: string }> = {
   'Part XIV': { bg: '#c08579', hover: '#a0665c' },
 };
 
+const getNumeral = (partKey: string) => partKey.replace('Part ', '');
+
 const PART_SHORT_NAMES: Record<string, string> = {
-  'Part I': 'I. Policymaking & Coordination',
-  'Part II': 'II. Political Affairs',
-  'Part III': 'III. Justice & Law',
-  'Part IV': 'IV. International Development',
-  'Part V': 'V. Regional Development',
-  'Part VI': 'VI. Human Rights & Humanitarian',
-  'Part VII': 'VII. Global Communications',
-  'Part VIII': 'VIII. Support Services',
-  'Part IX': 'IX. Internal Oversight',
-  'Part X': 'X. Joint Activities & Special',
-  'Part XI': 'XI. Capital Expenditure',
-  'Part XII': 'XII. Safety & Security',
-  'Part XIII': 'XIII. Development Account',
-  'Part XIV': 'XIV. Staff Assessment',
+  'Part I': 'Policymaking & Coordination',
+  'Part II': 'Political Affairs',
+  'Part III': 'Justice & Law',
+  'Part IV': 'International Development',
+  'Part V': 'Regional Development',
+  'Part VI': 'Human Rights & Humanitarian',
+  'Part VII': 'Global Communications',
+  'Part VIII': 'Support Services',
+  'Part IX': 'Internal Oversight',
+  'Part X': 'Joint Activities & Special',
+  'Part XI': 'Capital Expenditure',
+  'Part XII': 'Safety & Security',
+  'Part XIII': 'Development Account',
+  'Part XIV': 'Staff Assessment',
 };
 
 interface Rect {
@@ -153,7 +155,7 @@ export default function BudgetTreemap({ parts, onEntityClick }: BudgetTreemapPro
   });
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-2">
       {/* Treemap */}
       <div className="relative bg-gray-100 flex-1" style={{ height: `${TREEMAP_HEIGHT}px` }}>
         {partHeights.map(({ part, startY, height }) => {
@@ -241,30 +243,34 @@ export default function BudgetTreemap({ parts, onEntityClick }: BudgetTreemapPro
       </div>
 
       {/* Part Labels */}
-      <div className="w-56 flex-shrink-0 relative" style={{ height: `${TREEMAP_HEIGHT}px` }}>
+      <div className="w-60 flex-shrink-0 relative" style={{ height: `${TREEMAP_HEIGHT}px` }}>
         {partHeights.map(({ part, startY }) => {
           const colors = PART_COLORS[part.part] || PART_COLORS['Part I'];
           const isCompact = ['Part IX', 'Part X', 'Part XI', 'Part XII', 'Part XIII', 'Part XIV'].includes(part.part);
+          const numeral = getNumeral(part.part);
+          const name = PART_SHORT_NAMES[part.part] || part.partName;
           
           return isCompact ? (
-            <span
+            <div
               key={`label-${part.part}`}
-              className="absolute left-2 text-xs whitespace-nowrap"
+              className="absolute left-0 text-xs whitespace-nowrap flex"
               style={{ top: `${startY}%`, color: colors.bg }}
             >
-              <span className="font-medium">{PART_SHORT_NAMES[part.part]}</span>
+              <span className="w-6 font-medium">{numeral}.</span>
+              <span className="font-medium">{name}</span>
               <span className="ml-3">{formatBudget(part.totalBudget)} {formatVariance(part.varianceVs2025)}</span>
-            </span>
+            </div>
           ) : (
             <div
               key={`label-${part.part}`}
-              className="absolute left-2 text-xs leading-tight"
+              className="absolute left-0 text-xs leading-tight flex"
               style={{ top: `${startY}%`, color: colors.bg }}
             >
-              <div className="font-medium">
-                {PART_SHORT_NAMES[part.part] || part.partName}
+              <span className="w-6 font-medium">{numeral}.</span>
+              <div>
+                <div className="font-medium">{name}</div>
+                <div className="mt-0.5">{formatBudget(part.totalBudget)} {formatVariance(part.varianceVs2025)}</div>
               </div>
-              <div className="mt-0.5">{formatBudget(part.totalBudget)} {formatVariance(part.varianceVs2025)}</div>
             </div>
           );
         })}

@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useState, useEffect, useMemo } from 'react';
+import BudgetOverview from '@/components/BudgetOverview';
 import BudgetTreemap from '@/components/BudgetTreemap';
 import BudgetLollipop from '@/components/BudgetLollipop';
 import EntityModal from '@/components/EntityModal';
@@ -23,6 +24,10 @@ export default function Home() {
       })
       .catch(() => setLoading(false));
   }, []);
+
+  const grandTotal = useMemo(() => {
+    return budgetData.find(b => b.row_type === 'grand_total') || null;
+  }, [budgetData]);
 
   const parts = useMemo(() => {
     if (budgetData.length === 0) return [];
@@ -178,6 +183,11 @@ export default function Home() {
             </a>
           </p>
         </section>
+
+        {/* Budget Overview */}
+        {!loading && grandTotal && (
+          <BudgetOverview grandTotal={grandTotal} />
+        )}
 
         {/* Treemap Section */}
         <section className="mb-16">

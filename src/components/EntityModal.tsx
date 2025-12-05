@@ -1,6 +1,7 @@
 'use client';
 
 import { TreemapEntity, DetailItem, Narrative } from '@/types';
+import { formatMoney, formatVariance, getArrow } from '@/lib/format';
 import { X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -85,19 +86,6 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
 
   const b = entity.budgetItem;
 
-  const formatMoney = (val: number | null): string => {
-    if (val === null || val === undefined) return '—';
-    const abs = Math.abs(val);
-    if (abs >= 1_000_000) return `$${(val / 1_000_000).toFixed(2)}M`;
-    if (abs >= 1_000) return `$${(val / 1_000).toFixed(1)}K`;
-    return `$${val.toFixed(0)}`;
-  };
-
-  const formatPercent = (val: number | null): string => {
-    if (val === null || val === undefined) return '—';
-    const sign = val > 0 ? '+' : '';
-    return `${sign}${val.toFixed(1)}%`;
-  };
 
   const varianceVsProposed = b['Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)'];
   const varianceVs2025 = b['Variance (excluding resources redeployed for consolidation) – Compared with 2025 approved (percentage)'];
@@ -146,7 +134,7 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
       (value ?? 0) > 0 ? 'bg-green-100 text-green-700' : 
       'bg-gray-100 text-gray-600'
     }`}>
-      {formatPercent(value)}
+      {formatVariance(value)}
     </span>
   );
 
@@ -244,19 +232,19 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
                 <tbody>
                   <tr className="border-b border-gray-200">
                     <td className="px-3 py-2 text-gray-600">Relocation</td>
-                    <td className="px-3 py-2 text-right text-gray-900">{formatMoney(b['UN80 changes (excluding transitional capacities) – Relocation'])}</td>
+                    <td className="px-3 py-2 text-right text-gray-900">{getArrow(b['UN80 changes (excluding transitional capacities) – Relocation'])}{formatMoney(b['UN80 changes (excluding transitional capacities) – Relocation'], true)}</td>
                   </tr>
                   <tr className="border-b border-gray-200">
                     <td className="px-3 py-2 text-gray-600">Consolidation</td>
-                    <td className="px-3 py-2 text-right text-gray-900">{formatMoney(b['UN80 changes (excluding transitional capacities) – Consolidation'])}</td>
+                    <td className="px-3 py-2 text-right text-gray-900">{getArrow(b['UN80 changes (excluding transitional capacities) – Consolidation'])}{formatMoney(b['UN80 changes (excluding transitional capacities) – Consolidation'], true)}</td>
                   </tr>
                   <tr className="border-b border-gray-200">
                     <td className="px-3 py-2 text-gray-600">Other</td>
-                    <td className="px-3 py-2 text-right text-gray-900">{formatMoney(b['UN80 changes (excluding transitional capacities) – Other'])}</td>
+                    <td className="px-3 py-2 text-right text-gray-900">{getArrow(b['UN80 changes (excluding transitional capacities) – Other'])}{formatMoney(b['UN80 changes (excluding transitional capacities) – Other'], true)}</td>
                   </tr>
                   <tr className="bg-gray-100">
                     <td className="px-3 py-2 font-semibold text-gray-900">Total</td>
-                    <td className="px-3 py-2 text-right font-bold text-gray-900">{formatMoney(b['UN80 changes (excluding transitional capacities) – Total'])}</td>
+                    <td className="px-3 py-2 text-right font-bold text-gray-900">{getArrow(b['UN80 changes (excluding transitional capacities) – Total'])}{formatMoney(b['UN80 changes (excluding transitional capacities) – Total'], true)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -264,7 +252,7 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
             {b['Transitional capacities'] !== null && b['Transitional capacities'] !== 0 && (
               <div className="mt-2 bg-amber-50 rounded-lg px-3 py-2 flex justify-between">
                 <span className="text-sm text-amber-700">Transitional Capacities</span>
-                <span className="text-sm font-medium text-amber-900">{formatMoney(b['Transitional capacities'])}</span>
+                <span className="text-sm font-medium text-amber-900">{getArrow(b['Transitional capacities'])}{formatMoney(b['Transitional capacities'], true)}</span>
               </div>
             )}
           </section>

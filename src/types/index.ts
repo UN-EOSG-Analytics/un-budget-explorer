@@ -1,5 +1,5 @@
 export interface BudgetItem {
-  row_type: 'part_total' | 'section_total' | 'entity_total';
+  row_type: 'grand_total' | 'part_total' | 'section_total' | 'entity_total';
   Part: string;
   'Part name': string;
   Section: string | null;

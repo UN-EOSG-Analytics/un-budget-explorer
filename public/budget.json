@@ -1,5 +1,25 @@
 [
   {
+    "row_type":"grand_total",
+    "Part":null,
+    "Part name":"Total",
+    "Section":null,
+    "Section name":null,
+    "Entity name":null,
+    "2025 approved":3814838500.0,
+    "2026 proposed programme budget":3714930900.0,
+    "UN80 changes (excluding transitional capacities) – Relocation":-5005000.0,
+    "UN80 changes (excluding transitional capacities) – Consolidation":0.0,
+    "UN80 changes (excluding transitional capacities) – Other":-471737000.0,
+    "UN80 changes (excluding transitional capacities) – Total":-476742000.0,
+    "2026 revised estimate":3238188900.0,
+    "Variance (excluding resources redeployed for consolidation) – Compared with 2025 approved (percentage)":-15.1,
+    "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-12.8,
+    "Transitional capacities":5369400.0,
+    "footnotes":null,
+    "chapter_title":null
+  },
+  {
     "row_type":"part_total",
     "Part":"Part I",
     "Part name":"Overall policymaking, direction and coordination",

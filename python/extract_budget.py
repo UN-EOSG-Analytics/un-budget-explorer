@@ -88,6 +88,18 @@ def clean_table6():
     df = df[~is_part_header & ~df[col].isin(['–\tOther', 'Total']) & df['2025 approved'].notna()]
     df = df[order + numeric_cols + ['footnotes']]
 
+    # save grand total as a separate row
+    grand_total_row = pd.DataFrame([{
+        'row_type': 'grand_total',
+        'Part': None,
+        'Part name': 'Total',
+        'Section': None,
+        'Section name': None,
+        'Entity name': None,
+        **grand_total.to_dict(),
+        'footnotes': None,
+    }])
+    
     # extraction is finished now, but there are errors
     errors = verify_hierarchy(df, grand_total)
     assert len(errors) == 2  # known data errors in source: Transitional capacities not aggregated
@@ -106,6 +118,8 @@ def clean_table6():
         df.loc[(df['Part'] == part) & (df['row_type'] == 'part_total'), tc] = section_sum
     errors = verify_hierarchy(df, grand_total)
     assert not errors
+    # prepend grand total row to the dataframe
+    df = pd.concat([grand_total_row, df], ignore_index=True)
     df.to_csv("data/intermediate/table6.csv", index=False)
     return df
 

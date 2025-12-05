@@ -6,6 +6,7 @@ import { useState } from 'react';
 interface LollipopRow {
   id: string;
   label: string;
+  numeral: string; // Roman numeral or section number for alignment
   level: number;
   approved2025: number;
   proposed2026: number;
@@ -48,12 +49,7 @@ const formatVarianceNum = (value: number | null): string => {
   return `${Math.abs(value).toFixed(1)}%`;
 };
 
-const PART_NUMBERS: Record<string, string> = {
-  'Part I': 'I', 'Part II': 'II', 'Part III': 'III', 'Part IV': 'IV',
-  'Part V': 'V', 'Part VI': 'VI', 'Part VII': 'VII', 'Part VIII': 'VIII',
-  'Part IX': 'IX', 'Part X': 'X', 'Part XI': 'XI', 'Part XII': 'XII',
-  'Part XIII': 'XIII', 'Part XIV': 'XIV',
-};
+const getNumeral = (partKey: string) => partKey.replace('Part ', '');
 
 // Generate nice round tick values
 const generateTicks = (maxValue: number): number[] => {
@@ -100,10 +96,11 @@ export default function BudgetLollipop({ budgetData, onEntityClick }: BudgetLoll
     if (!partData) return;
 
     const partSections = sectionsPerPart.get(partKey) || [];
-    const partNum = PART_NUMBERS[partKey] || '';
+    const partNum = getNumeral(partKey);
     rows.push({
       id: partKey,
-      label: `${partNum}. ${partData['Part name']}`,
+      label: partData['Part name'],
+      numeral: partNum,
       level: 0,
       approved2025: partData['2025 approved'] || 0,
       proposed2026: partData['2026 proposed programme budget'] || 0,
@@ -127,7 +124,8 @@ export default function BudgetLollipop({ budgetData, onEntityClick }: BudgetLoll
         
         rows.push({
           id: sectionKey,
-          label: `${sectionData.Section}. ${sectionData['Section name']}`,
+          label: sectionData['Section name'] || '',
+          numeral: sectionData.Section || '',
           level: 1,
           approved2025: sectionData['2025 approved'] || 0,
           proposed2026: sectionData['2026 proposed programme budget'] || 0,
@@ -146,6 +144,7 @@ export default function BudgetLollipop({ budgetData, onEntityClick }: BudgetLoll
             rows.push({
               id: `${sectionKey}-${entityData['Entity name']}`,
               label: entityData['Entity name'] || 'Unknown',
+              numeral: '',
               level: 2,
               approved2025: entityData['2025 approved'] || 0,
               proposed2026: entityData['2026 proposed programme budget'] || 0,
@@ -247,17 +246,20 @@ export default function BudgetLollipop({ budgetData, onEntityClick }: BudgetLoll
             >
               {/* Label */}
               <div
-                className={`flex-shrink-0 truncate text-xs pr-2 ${isClickable ? 'hover:text-un-blue' : ''} ${row.level === 0 ? 'font-medium' : ''}`}
+                className={`flex-shrink-0 flex items-center text-xs pr-2 ${isClickable ? 'hover:text-un-blue' : ''} ${row.level === 0 ? 'font-medium' : ''}`}
                 style={{ width: LABEL_WIDTH, paddingLeft: indent + 8 }}
               >
                 {row.hasChildren ? (
-                  <span className="inline-block w-4 text-gray-400">
+                  <span className="inline-block w-4 flex-shrink-0 text-gray-400">
                     {isExpanded ? '▼' : '▶'}
                   </span>
                 ) : (
-                  <span className="inline-block w-4" />
+                  <span className="inline-block w-4 flex-shrink-0" />
                 )}
-                {row.label}
+                {row.numeral && (
+                  <span className="w-7 flex-shrink-0">{row.numeral}.</span>
+                )}
+                <span className="truncate">{row.label}</span>
               </div>
 
               {/* Variance column - arrow and percentage in separate columns */}
@@ -348,7 +350,7 @@ export default function BudgetLollipop({ budgetData, onEntityClick }: BudgetLoll
             className="fixed z-50 pointer-events-none bg-white border border-gray-200 shadow-lg rounded-lg px-3 py-3 text-sm w-72"
             style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
           >
-            <p className="font-medium text-gray-900 mb-3">{tooltip.row.label}</p>
+            <p className="font-medium text-gray-900 mb-3">{tooltip.row.numeral ? `${tooltip.row.numeral}. ${tooltip.row.label}` : tooltip.row.label}</p>
             
             {/* Three boxes in a row */}
             <div className="flex items-center gap-1 text-center">
