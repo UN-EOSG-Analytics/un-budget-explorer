@@ -220,7 +220,11 @@ def extract_entity_details():
 extract_table(9, "data/intermediate/table6_raw.csv")
 budget = clean_table6()
 name_map = pd.read_csv("data/intermediate/entity_name_mapping.csv").set_index('table6_name')['doc_name'].to_dict()
-budget['chapter_title'] = budget['Entity name'].map(lambda x: name_map.get(x, x))
+# Map Entity name first, then fall back to Section name for section-only rows
+budget['chapter_title'] = budget.apply(
+    lambda r: name_map.get(r['Entity name'], r['Entity name']) if pd.notna(r['Entity name']) 
+              else name_map.get(r['Section name'], r['Section name']), axis=1
+)
 budget.to_json("public/budget.json", orient="records", indent=2, force_ascii=False)
 
 # budget details based on later sections in the document
