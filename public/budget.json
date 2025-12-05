@@ -17,7 +17,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-12.8,
     "Transitional capacities":5369400.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"part_total",
@@ -37,7 +39,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":754200.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -57,7 +61,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":754200.0,
     "footnotes":null,
-    "chapter_title":"Overall policymaking, direction and coordination"
+    "chapter_title":"Overall policymaking, direction and coordination",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -77,7 +83,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"General Assembly"
+    "chapter_title":"General Assembly",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -97,7 +105,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Advisory Committee on Administrative and Budgetary Questions"
+    "chapter_title":"Advisory Committee on Administrative and Budgetary Questions",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -117,7 +127,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Committee on Contributions"
+    "chapter_title":"Committee on Contributions",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -137,7 +149,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Board of Auditors"
+    "chapter_title":"Board of Auditors",
+    "abbreviation":"Board of Auditors",
+    "entity_name":"Board of Auditors"
   },
   {
     "row_type":"entity_total",
@@ -157,7 +171,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Secretariat of the United Nations Staff Pension Committee"
+    "chapter_title":"Secretariat of the United Nations Staff Pension Committee",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -177,7 +193,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Committee for Programme and Coordination"
+    "chapter_title":"Committee for Programme and Coordination",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -197,7 +215,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Independent Audit Advisory Committee"
+    "chapter_title":"Independent Audit Advisory Committee",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -217,7 +237,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Secretary-General"
+    "chapter_title":"Secretary-General",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -237,7 +259,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-16.7,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Executive Office of the Secretary-General"
+    "chapter_title":"Executive Office of the Secretary-General",
+    "abbreviation":"EOSG",
+    "entity_name":"Executive Office of the Secretary-General"
   },
   {
     "row_type":"entity_total",
@@ -257,7 +281,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-5.3,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of the Director-General, United Nations Office at Geneva"
+    "chapter_title":"Office of the Director-General, United Nations Office at Geneva",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -277,7 +303,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-7.9,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of the Director-General, United Nations Office at Vienna"
+    "chapter_title":"Office of the Director-General, United Nations Office at Vienna",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -297,7 +325,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-20.5,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of the Director-General, United Nations Office at Nairobi"
+    "chapter_title":"Office of the Director-General, United Nations Office at Nairobi",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -317,7 +347,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-14.5,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of the Special Representative of the Secretary-General for Children and Armed Conflict"
+    "chapter_title":"Office of the Special Representative of the Secretary-General for Children and Armed Conflict",
+    "abbreviation":"SRSG-CAAC",
+    "entity_name":"Office of the Special Representative of the Secretary-General for Children and Armed Conflict"
   },
   {
     "row_type":"entity_total",
@@ -337,7 +369,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-12.5,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of the Special Representative of the Secretary-General on Sexual Violence in Conflict"
+    "chapter_title":"Office of the Special Representative of the Secretary-General on Sexual Violence in Conflict",
+    "abbreviation":"SRSG-SVC",
+    "entity_name":"Office of the Special Representative of the Secretary-General on Sexual Violence in Conflict"
   },
   {
     "row_type":"entity_total",
@@ -357,7 +391,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of the Special Representative of the Secretary-General on Violence against Children"
+    "chapter_title":"Office of the Special Representative of the Secretary-General on Violence against Children",
+    "abbreviation":"SRSG-VAC",
+    "entity_name":"Office of the Special Representative of the Secretary-General on Violence against Children"
   },
   {
     "row_type":"entity_total",
@@ -377,7 +413,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-1.6,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of the Victims’ Rights Advocate"
+    "chapter_title":"Office of the Victims’ Rights Advocate",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -397,7 +435,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-1.1,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of the United Nations Special Coordinator on Improving the United Nations Response to Sexual Exploitation and Abuse"
+    "chapter_title":"Office of the United Nations Special Coordinator on Improving the United Nations Response to Sexual Exploitation and Abuse",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -417,7 +457,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-12.7,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of the United Nations Ombudsman and Mediation Services"
+    "chapter_title":"Office of the United Nations Ombudsman and Mediation Services",
+    "abbreviation":"UNOMS",
+    "entity_name":"Office of the United Nations Ombudsman and Mediation Services"
   },
   {
     "row_type":"entity_total",
@@ -437,7 +479,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.2,
     "Transitional capacities":754200.0,
     "footnotes":null,
-    "chapter_title":"Office of Administration of Justice"
+    "chapter_title":"Office of Administration of Justice",
+    "abbreviation":"OAJ",
+    "entity_name":"Office of Administration of Justice"
   },
   {
     "row_type":"entity_total",
@@ -457,7 +501,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.3,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Ethics Office"
+    "chapter_title":"Ethics Office",
+    "abbreviation":"Ethics Office",
+    "entity_name":"United Nations Ethics Office"
   },
   {
     "row_type":"entity_total",
@@ -477,7 +523,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Investigation into the conditions and circumstances resulting in the tragic death of Dag Hammarskjöld and of the members of the party accompanying him"
+    "chapter_title":"Investigation into the conditions and circumstances resulting in the tragic death of Dag Hammarskjöld and of the members of the party accompanying him",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -497,7 +545,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":"a",
-    "chapter_title":"Resident coordinator system"
+    "chapter_title":"Resident coordinator system",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -517,7 +567,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-14.5,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"United Nations Youth Office"
+    "chapter_title":"United Nations Youth Office",
+    "abbreviation":"UN Youth",
+    "entity_name":"United Nations Youth Office"
   },
   {
     "row_type":"entity_total",
@@ -537,7 +589,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-5.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of Data Protection and Privacy"
+    "chapter_title":"Office of Data Protection and Privacy",
+    "abbreviation":"ODPP",
+    "entity_name":"Office of Data Protection and Privacy"
   },
   {
     "row_type":"entity_total",
@@ -557,7 +611,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.1,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office for Digital and Emerging Technologies"
+    "chapter_title":"Office for Digital and Emerging Technologies",
+    "abbreviation":"ODET",
+    "entity_name":"Office for Digital and Emerging Technologies"
   },
   {
     "row_type":"entity_total",
@@ -577,7 +633,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"United Nations Alliance of Civilizations"
+    "chapter_title":"United Nations Alliance of Civilizations",
+    "abbreviation":"UNAOC",
+    "entity_name":"United Nations Alliance of Civilizations"
   },
   {
     "row_type":"entity_total",
@@ -597,7 +655,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-100.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of the Special Envoy of the Secretary-General for Future Generations"
+    "chapter_title":"Office of the Special Envoy of the Secretary-General for Future Generations",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -617,7 +677,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-17.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Department for General Assembly and Conference Management"
+    "chapter_title":"Department for General Assembly and Conference Management",
+    "abbreviation":"DGACM",
+    "entity_name":"Department for General Assembly and Conference Management"
   },
   {
     "row_type":"part_total",
@@ -637,7 +699,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -657,7 +721,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Political affairs"
+    "chapter_title":"Political affairs",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -677,7 +743,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Special political missions"
+    "chapter_title":"Special political missions",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -697,7 +765,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-8.2,
     "Transitional capacities":0.0,
     "footnotes":"b",
-    "chapter_title":"Department of Political and Peacebuilding Affairs"
+    "chapter_title":"Department of Political and Peacebuilding Affairs",
+    "abbreviation":"DPPA",
+    "entity_name":"Department of Political and Peacebuilding Affairs"
   },
   {
     "row_type":"entity_total",
@@ -717,7 +787,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-16.2,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of the United Nations Special Coordinator for the Middle East Peace Process"
+    "chapter_title":"Office of the United Nations Special Coordinator for the Middle East Peace Process",
+    "abbreviation":"UNSCO",
+    "entity_name":"Office of the United Nations Special Coordinator for the Middle East Peace Process"
   },
   {
     "row_type":"entity_total",
@@ -737,7 +809,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-11.6,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"United Nations Register of Damage Caused by the Construction of the Wall in the Occupied Palestinian Territory"
+    "chapter_title":"United Nations Register of Damage Caused by the Construction of the Wall in the Occupied Palestinian Territory",
+    "abbreviation":"UNRoD",
+    "entity_name":"United Nations Register of Damage Caused by the Construction of the Wall in the Occupied Palestinian Territory"
   },
   {
     "row_type":"entity_total",
@@ -757,7 +831,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"United Nations Office to the African Union"
+    "chapter_title":"United Nations Office to the African Union",
+    "abbreviation":"UNOAU",
+    "entity_name":"United Nations Office to the African Union"
   },
   {
     "row_type":"entity_total",
@@ -777,7 +853,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.5,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of Counter-Terrorism"
+    "chapter_title":"Office of Counter-Terrorism",
+    "abbreviation":"OCT",
+    "entity_name":"Office of Counter-Terrorism"
   },
   {
     "row_type":"section_total",
@@ -797,7 +875,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office for Disarmament Affairs"
+    "chapter_title":"Office for Disarmament Affairs",
+    "abbreviation":"ODA",
+    "entity_name":"Office for Disarmament Affairs"
   },
   {
     "row_type":"section_total",
@@ -817,7 +897,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Peacekeeping operations"
+    "chapter_title":"Peacekeeping operations",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -837,7 +919,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Department of Peace Operations"
+    "chapter_title":"Department of Peace Operations",
+    "abbreviation":"DPO",
+    "entity_name":"Department of Peace Operations"
   },
   {
     "row_type":"entity_total",
@@ -857,7 +941,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-11.3,
     "Transitional capacities":0.0,
     "footnotes":"c",
-    "chapter_title":"United Nations Truce Supervision Organization"
+    "chapter_title":"United Nations Truce Supervision Organization",
+    "abbreviation":"UNTSO",
+    "entity_name":"United Nations Truce Supervision Organization"
   },
   {
     "row_type":"entity_total",
@@ -877,7 +963,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-12.5,
     "Transitional capacities":0.0,
     "footnotes":"d",
-    "chapter_title":"United Nations Military Observer Group in India and Pakistan"
+    "chapter_title":"United Nations Military Observer Group in India and Pakistan",
+    "abbreviation":"UNMOGIP",
+    "entity_name":"United Nations Military Observer Group in India and Pakistan"
   },
   {
     "row_type":"section_total",
@@ -897,7 +985,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office for Outer Space Affairs"
+    "chapter_title":"Office for Outer Space Affairs",
+    "abbreviation":"OOSA",
+    "entity_name":"Office for Outer Space Affairs"
   },
   {
     "row_type":"part_total",
@@ -917,7 +1007,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":2095100.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -937,7 +1029,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"International Court of Justice"
+    "chapter_title":"International Court of Justice",
+    "abbreviation":"ICJ",
+    "entity_name":"International Court of Justice"
   },
   {
     "row_type":"section_total",
@@ -957,7 +1051,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":2095100.0,
     "footnotes":null,
-    "chapter_title":"Legal affairs"
+    "chapter_title":"Legal affairs",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -977,7 +1073,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-14.9,
     "Transitional capacities":2095100.0,
     "footnotes":null,
-    "chapter_title":"Office of Legal Affairs"
+    "chapter_title":"Office of Legal Affairs",
+    "abbreviation":"OLA",
+    "entity_name":"Office of Legal Affairs"
   },
   {
     "row_type":"entity_total",
@@ -997,7 +1095,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.1,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Independent Investigative Mechanism for Myanmar"
+    "chapter_title":"Independent Investigative Mechanism for Myanmar",
+    "abbreviation":"IIM",
+    "entity_name":"Independent Investigative Mechanism for Myanmar"
   },
   {
     "row_type":"entity_total",
@@ -1017,7 +1117,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-16.3,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"International, Impartial and Independent Mechanism to Assist in the Investigation and Prosecution of Persons Responsible for the Most Serious Crimes under International Law Committed in the Syrian Arab Republic since March 2011"
+    "chapter_title":"International, Impartial and Independent Mechanism to Assist in the Investigation and Prosecution of Persons Responsible for the Most Serious Crimes under International Law Committed in the Syrian Arab Republic since March 2011",
+    "abbreviation":"IIIM",
+    "entity_name":"International, Impartial and Independent Mechanism to Assist in the Investigation and Prosecution of Persons Responsible for the Most Serious Crimes under International Law Committed in the Syrian Arab Republic since March 2011"
   },
   {
     "row_type":"part_total",
@@ -1037,7 +1139,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1057,7 +1161,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.4,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Department of Economic and Social Affairs"
+    "chapter_title":"Department of Economic and Social Affairs",
+    "abbreviation":"DESA",
+    "entity_name":"Department of Economic and Social Affairs"
   },
   {
     "row_type":"section_total",
@@ -1077,7 +1183,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":2.8,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Least developed countries, landlocked developing countries and small island developing States"
+    "chapter_title":"Least developed countries, landlocked developing countries and small island developing States",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1097,7 +1205,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"United Nations system support for the African Union’s Agenda 2063: The Africa We Want"
+    "chapter_title":"United Nations system support for the African Union’s Agenda 2063: The Africa We Want",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1117,7 +1227,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-16.1,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"United Nations Conference on Trade and Development"
+    "chapter_title":"United Nations Conference on Trade and Development",
+    "abbreviation":"UNCTAD",
+    "entity_name":"United Nations Conference on Trade and Development"
   },
   {
     "row_type":"section_total",
@@ -1137,7 +1249,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-11.2,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"International Trade Centre"
+    "chapter_title":"International Trade Centre",
+    "abbreviation":"ITC",
+    "entity_name":"International Trade Centre"
   },
   {
     "row_type":"section_total",
@@ -1157,7 +1271,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"United Nations Environment Programme"
+    "chapter_title":"United Nations Environment Programme",
+    "abbreviation":"UNEP",
+    "entity_name":"United Nations Environment Programme"
   },
   {
     "row_type":"section_total",
@@ -1177,7 +1293,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-17.2,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"UN-Habitat"
+    "chapter_title":"UN-Habitat",
+    "abbreviation":"UN-Habitat",
+    "entity_name":"United Nations Human Settlements Programme"
   },
   {
     "row_type":"section_total",
@@ -1197,7 +1315,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.2,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"United Nations Office on Drugs and Crime"
+    "chapter_title":"United Nations Office on Drugs and Crime",
+    "abbreviation":"UNODC",
+    "entity_name":"United Nations Office on Drugs and Crime"
   },
   {
     "row_type":"section_total",
@@ -1217,7 +1337,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-14.9,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"UN-Women"
+    "chapter_title":"UN-Women",
+    "abbreviation":"UN-Women",
+    "entity_name":"United Nations Entity for Gender Equality and the Empowerment of Women"
   },
   {
     "row_type":"part_total",
@@ -1237,7 +1359,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":1034500.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1257,7 +1381,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":null,
     "footnotes":null,
-    "chapter_title":"Economic and social development in Africa"
+    "chapter_title":"Economic and social development in Africa",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -1277,7 +1403,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-9.8,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Economic Commission for Africa"
+    "chapter_title":"Economic Commission for Africa",
+    "abbreviation":"ECA",
+    "entity_name":"Economic Commission for Africa"
   },
   {
     "row_type":"entity_total",
@@ -1297,7 +1425,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-8.7,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Regional Commissions New York Office"
+    "chapter_title":"Regional Commissions New York Office",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1317,7 +1447,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-13.1,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Economic and Social Commission for Asia and the Pacific"
+    "chapter_title":"Economic and Social Commission for Asia and the Pacific",
+    "abbreviation":"ESCAP",
+    "entity_name":"Economic and Social Commission for Asia and the Pacific"
   },
   {
     "row_type":"section_total",
@@ -1337,7 +1469,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-13.9,
     "Transitional capacities":308700.0,
     "footnotes":null,
-    "chapter_title":"Economic Commission for Europe"
+    "chapter_title":"Economic Commission for Europe",
+    "abbreviation":"ECE",
+    "entity_name":"Economic Commission for Europe"
   },
   {
     "row_type":"section_total",
@@ -1357,7 +1491,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-10.5,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Economic Commission for Latin America and the Caribbean"
+    "chapter_title":"Economic Commission for Latin America and the Caribbean",
+    "abbreviation":"ECLAC",
+    "entity_name":"Economic Commission for Latin America and the Caribbean"
   },
   {
     "row_type":"section_total",
@@ -1377,7 +1513,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-12.1,
     "Transitional capacities":725800.0,
     "footnotes":null,
-    "chapter_title":"Economic and Social Commission for Western Asia"
+    "chapter_title":"Economic and Social Commission for Western Asia",
+    "abbreviation":"ESCWA",
+    "entity_name":"Economic and Social Commission for Western Asia"
   },
   {
     "row_type":"section_total",
@@ -1397,7 +1535,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":1.9,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Regular programme of technical cooperation"
+    "chapter_title":"Regular programme of technical cooperation",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"part_total",
@@ -1417,7 +1557,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1437,7 +1579,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":null,
     "footnotes":null,
-    "chapter_title":"Human rights"
+    "chapter_title":"Human rights",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -1457,7 +1601,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of the United Nations High Commissioner for Human Rights"
+    "chapter_title":"Office of the United Nations High Commissioner for Human Rights",
+    "abbreviation":"OHCHR",
+    "entity_name":"Office of the United Nations High Commissioner for Human Rights"
   },
   {
     "row_type":"entity_total",
@@ -1477,7 +1623,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Committee on Missing Persons in Cyprus"
+    "chapter_title":"Committee on Missing Persons in Cyprus",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -1497,7 +1645,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Independent Institution on Missing Persons in the Syrian Arab Republic"
+    "chapter_title":"Independent Institution on Missing Persons in the Syrian Arab Republic",
+    "abbreviation":"IIMP",
+    "entity_name":"Independent Institution on Missing Persons in the Syrian Arab Republic"
   },
   {
     "row_type":"section_total",
@@ -1517,7 +1667,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"International protection, durable solutions and assistance to refugees"
+    "chapter_title":"International protection, durable solutions and assistance to refugees",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1537,7 +1689,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Palestine refugees"
+    "chapter_title":"Palestine refugees",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1557,7 +1711,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":null,
     "footnotes":null,
-    "chapter_title":"Humanitarian assistance"
+    "chapter_title":"Humanitarian assistance",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"entity_total",
@@ -1577,7 +1733,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.4,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office for the Coordination of Humanitarian Affairs"
+    "chapter_title":"Office for the Coordination of Humanitarian Affairs",
+    "abbreviation":"OCHA",
+    "entity_name":"Office for the Coordination of Humanitarian Affairs"
   },
   {
     "row_type":"entity_total",
@@ -1597,7 +1755,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"United Nations Office for Disaster Risk Reduction"
+    "chapter_title":"United Nations Office for Disaster Risk Reduction",
+    "abbreviation":"UNDRR",
+    "entity_name":"United Nations Office for Disaster Risk Reduction"
   },
   {
     "row_type":"part_total",
@@ -1617,7 +1777,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1637,7 +1799,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.4,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Department of Global Communications"
+    "chapter_title":"Department of Global Communications",
+    "abbreviation":"DGC",
+    "entity_name":"Department of Global Communications"
   },
   {
     "row_type":"part_total",
@@ -1657,7 +1821,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":1485600.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1677,7 +1843,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.1,
     "Transitional capacities":1280500.0,
     "footnotes":null,
-    "chapter_title":"Department of Management Strategy, Policy and Compliance"
+    "chapter_title":"Department of Management Strategy, Policy and Compliance",
+    "abbreviation":"DMSPC",
+    "entity_name":"Department of Management Strategy, Policy and Compliance"
   },
   {
     "row_type":"section_total",
@@ -1697,7 +1865,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-12.9,
     "Transitional capacities":205100.0,
     "footnotes":"ef",
-    "chapter_title":"Department of Operational Support"
+    "chapter_title":"Department of Operational Support",
+    "abbreviation":"DOS",
+    "entity_name":"Department of Operational Support"
   },
   {
     "row_type":"section_total",
@@ -1717,7 +1887,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-13.6,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of Information and Communications Technology"
+    "chapter_title":"Office of Information and Communications Technology",
+    "abbreviation":"OICT",
+    "entity_name":"Office of Information and Communications Technology"
   },
   {
     "row_type":"section_total",
@@ -1737,7 +1909,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-17.8,
     "Transitional capacities":0.0,
     "footnotes":"g",
-    "chapter_title":"United Nations Office at Nairobi"
+    "chapter_title":"United Nations Office at Nairobi",
+    "abbreviation":"UNON",
+    "entity_name":"United Nations Office at Nairobi"
   },
   {
     "row_type":"section_total",
@@ -1757,7 +1931,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"United Nations Office at Geneva"
+    "chapter_title":"United Nations Office at Geneva",
+    "abbreviation":"UNOG",
+    "entity_name":"United Nations Office at Geneva"
   },
   {
     "row_type":"section_total",
@@ -1777,7 +1953,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-9.8,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"United Nations Office at Vienna"
+    "chapter_title":"United Nations Office at Vienna",
+    "abbreviation":"UNOV",
+    "entity_name":"United Nations Office at Vienna"
   },
   {
     "row_type":"part_total",
@@ -1797,7 +1975,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1817,7 +1997,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-14.5,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Office of Internal Oversight Services"
+    "chapter_title":"Office of Internal Oversight Services",
+    "abbreviation":"OIOS",
+    "entity_name":"Office of Internal Oversight Services"
   },
   {
     "row_type":"part_total",
@@ -1837,7 +2019,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1857,7 +2041,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Jointly financed administrative activities"
+    "chapter_title":"Jointly financed administrative activities",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1877,7 +2063,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Special expenses"
+    "chapter_title":"Special expenses",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"part_total",
@@ -1897,7 +2085,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1917,7 +2107,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-9.4,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Construction, alteration, improvement and major maintenance"
+    "chapter_title":"Construction, alteration, improvement and major maintenance",
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"part_total",
@@ -1937,7 +2129,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1957,7 +2151,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-13.5,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Department of Safety and Security"
+    "chapter_title":"Department of Safety and Security",
+    "abbreviation":"DSS",
+    "entity_name":"Department of Safety and Security"
   },
   {
     "row_type":"part_total",
@@ -1977,7 +2173,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -1997,7 +2195,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Development Account"
+    "chapter_title":"Development Account",
+    "abbreviation":"DA",
+    "entity_name":"Development Account"
   },
   {
     "row_type":"part_total",
@@ -2017,7 +2217,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":null,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":null
+    "chapter_title":null,
+    "abbreviation":null,
+    "entity_name":null
   },
   {
     "row_type":"section_total",
@@ -2037,6 +2239,8 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":-15.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Staff assessment"
+    "chapter_title":"Staff assessment",
+    "abbreviation":null,
+    "entity_name":null
   }
 ]

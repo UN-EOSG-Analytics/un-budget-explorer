@@ -60,6 +60,8 @@ export default function Home() {
       const entity: TreemapEntity = {
         id: `${partKey}-${sectionKey}-${b['Entity name'] || b.chapter_title}`,
         name: b['Entity name'] || b.chapter_title || 'Unknown',
+        abbreviation: b.abbreviation,
+        entityName: b.entity_name,
         part: partKey,
         partName: b['Part name'],
         section: sectionKey,
@@ -93,6 +95,8 @@ export default function Home() {
       const entity: TreemapEntity = {
         id: `${partKey}-${sectionKey}-section`,
         name: b['Section name'] || 'Unknown Section',
+        abbreviation: b.abbreviation,
+        entityName: b.entity_name,
         part: partKey,
         partName: b['Part name'],
         section: sectionKey,

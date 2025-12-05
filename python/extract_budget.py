@@ -219,12 +219,35 @@ def extract_entity_details():
 # budget overview based on table 6
 extract_table(9, "data/intermediate/table6_raw.csv")
 budget = clean_table6()
-name_map = pd.read_csv("data/intermediate/entity_name_mapping.csv").set_index('table6_name')['doc_name'].to_dict()
+name_map = pd.read_csv("data/input/entity_name_mapping.csv").set_index('table6_name')['doc_name'].to_dict()
 # Map Entity name first, then fall back to Section name for section-only rows
 budget['chapter_title'] = budget.apply(
     lambda r: name_map.get(r['Entity name'], r['Entity name']) if pd.notna(r['Entity name']) 
               else name_map.get(r['Section name'], r['Section name']), axis=1
 )
+
+# Load UN entities for abbreviations and entity names
+with open("data/input/2025-12-05_un-entities.json", encoding="utf-8") as f:
+    un_entities = json.load(f)
+# Create mapping: entity_long -> (abbreviation, entity_long)
+entity_info = {e['entity_long']: (e['entity'], e['entity_long']) for e in un_entities if e.get('entity') and e.get('entity_long')}
+# Also add direct matches by abbreviation (entity field)
+entity_by_abbr = {e['entity']: (e['entity'], e['entity_long']) for e in un_entities if e.get('entity') and e.get('entity_long')}
+
+def get_entity_info(title):
+    """Return (abbreviation, entity_name) for a chapter_title."""
+    if not title:
+        return (None, None)
+    # Direct match by full name
+    if title in entity_info:
+        return entity_info[title]
+    # Direct match by abbreviation (for titles like "UN-Habitat")
+    if title in entity_by_abbr:
+        return entity_by_abbr[title]
+    return (None, None)
+
+budget['abbreviation'] = budget['chapter_title'].apply(lambda t: get_entity_info(t)[0])
+budget['entity_name'] = budget['chapter_title'].apply(lambda t: get_entity_info(t)[1])
 budget.to_json("public/budget.json", orient="records", indent=2, force_ascii=False)
 
 # budget details based on later sections in the document

@@ -121,10 +121,11 @@ export default function BudgetLollipop({ budgetData, onEntityClick }: BudgetLoll
       sectionsForPart.forEach(sectionData => {
         const sectionKey = `${partKey}-${sectionData.Section}`;
         const sectionEntities = entities.get(sectionKey) || [];
+        const hasChildren = sectionEntities.length > 0;
         
         rows.push({
           id: sectionKey,
-          label: sectionData['Section name'] || '',
+          label: hasChildren ? (sectionData['Section name'] || '') : (sectionData.entity_name || sectionData['Section name'] || ''),
           numeral: sectionData.Section || '',
           level: 1,
           approved2025: sectionData['2025 approved'] || 0,
@@ -133,7 +134,7 @@ export default function BudgetLollipop({ budgetData, onEntityClick }: BudgetLoll
           partKey,
           partNumber: partNum,
           sectionKey: sectionData.Section || undefined,
-          hasChildren: sectionEntities.length > 0,
+          hasChildren,
           budgetItem: sectionData,
         });
 
@@ -143,7 +144,7 @@ export default function BudgetLollipop({ budgetData, onEntityClick }: BudgetLoll
           sectionEntities.forEach(entityData => {
             rows.push({
               id: `${sectionKey}-${entityData['Entity name']}`,
-              label: entityData['Entity name'] || 'Unknown',
+              label: entityData.entity_name || entityData['Entity name'] || 'Unknown',
               numeral: '',
               level: 2,
               approved2025: entityData['2025 approved'] || 0,
@@ -184,6 +185,8 @@ export default function BudgetLollipop({ budgetData, onEntityClick }: BudgetLoll
       const entity: TreemapEntity = {
         id: row.id,
         name: b['Entity name'] || b['Section name'] || 'Unknown',
+        abbreviation: b.abbreviation,
+        entityName: b.entity_name,
         part: row.partKey,
         partName: b['Part name'],
         section: row.sectionKey || '',

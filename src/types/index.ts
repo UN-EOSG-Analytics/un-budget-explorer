@@ -17,6 +17,8 @@ export interface BudgetItem {
   'Transitional capacities': number | null;
   footnotes: string | null;
   chapter_title: string | null;
+  abbreviation: string | null;
+  entity_name: string | null;
 }
 
 export interface Narrative {
@@ -41,6 +43,8 @@ export interface DetailItem {
 export interface TreemapEntity {
   id: string;
   name: string;
+  abbreviation: string | null;
+  entityName: string | null;
   part: string;
   partName: string;
   section: string;

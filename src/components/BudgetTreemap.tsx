@@ -222,7 +222,7 @@ export default function BudgetTreemap({ parts, onEntityClick }: BudgetTreemapPro
                           {showLabel && (
                             <div className="p-2 h-full overflow-hidden">
                               <div className="text-xs font-medium leading-tight truncate text-white">
-                                {rect.data.name}
+                                {rect.data.abbreviation || rect.data.name}
                               </div>
                               {showBudget && (
                                 <div className="text-xs text-white/80 leading-tight truncate mt-0.5">
@@ -285,7 +285,10 @@ export default function BudgetTreemap({ parts, onEntityClick }: BudgetTreemapPro
             top: tooltip.y + 12,
           }}
         >
-          <p className="font-medium text-sm text-gray-900 leading-tight">{tooltip.entity.name}</p>
+          <p className="font-medium text-sm text-gray-900 leading-tight">{tooltip.entity.entityName || tooltip.entity.name}</p>
+          {tooltip.entity.abbreviation && (
+            <p className="text-xs text-gray-500">{tooltip.entity.abbreviation}</p>
+          )}
           <p className="text-xs text-gray-500 mt-1">{tooltip.entity.partName}</p>
           <p className="text-xs text-gray-600">
             Section {tooltip.entity.section}: {tooltip.entity.sectionName}

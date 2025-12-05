@@ -158,13 +158,26 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
         <div className="px-6 pt-5 pb-4 border-b border-gray-200 sticky top-0 bg-white z-10">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h2 className="text-xl font-bold text-gray-900 leading-tight">{entity.name}</h2>
+              <h2 className="text-xl font-bold text-gray-900 leading-tight">{entity.entityName || entity.name}</h2>
+              {entity.abbreviation && (
+                <p className="text-sm text-gray-500">{entity.abbreviation}</p>
+              )}
               <p className="text-sm text-gray-500 mt-1">
                 Part {getPartNumber(entity.part)}: {entity.partName}
               </p>
               <p className="text-xs text-gray-400">
                 Section {entity.section}: {entity.sectionName}
               </p>
+              {entity.abbreviation && (
+                <a
+                  href={`https://systemchart.un.org/?entity=${entity.abbreviation.toLowerCase()}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs text-un-blue hover:underline mt-2"
+                >
+                  View on System Chart →
+                </a>
+              )}
             </div>
             <button
               onClick={handleClose}
