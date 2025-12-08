@@ -136,6 +136,18 @@
 }
 
 /**
+ * Container Padding Utility
+ * 
+ * Consistent horizontal padding for header, main content, and footer
+ * Ensures perfect left/right alignment across all major layout sections
+ */
+@layer utilities {
+  .container-padding {
+    @apply px-6 sm:px-10;
+  }
+}
+
+/**
  * Scrollbar Management
  * 
  * Purpose: Prevent layout shifts when navigating between pages with different content heights

@@ -55,13 +55,14 @@ const formatVariance = (value: number | null): string => {
   return `${arrow}${Math.abs(value).toFixed(1)}%`;
 };
 
-// Simple squarify
+// Simple squarify with mobile optimization
 function squarify<T>(
   items: { value: number; data: T }[],
   x: number,
   y: number,
   width: number,
   height: number,
+  forceMobileLayout: boolean = false,
 ): (Rect & { data: T })[] {
   const total = items.reduce((sum, item) => sum + item.value, 0);
   if (total === 0 || items.length === 0) return [];
@@ -71,7 +72,7 @@ function squarify<T>(
     normalizedValue: (item.value / total) * width * height,
   }));
 
-  return slice(normalized, x, y, width, height);
+  return slice(normalized, x, y, width, height, forceMobileLayout);
 }
 
 function slice<T>(
@@ -80,6 +81,7 @@ function slice<T>(
   y: number,
   width: number,
   height: number,
+  forceMobileLayout: boolean = false,
 ): (Rect & { data: T })[] {
   if (items.length === 0) return [];
   if (items.length === 1) {
@@ -88,6 +90,75 @@ function slice<T>(
 
   const total = items.reduce((sum, item) => sum + item.normalizedValue, 0);
 
+  // Mobile layout: group small items horizontally in rows
+  if (forceMobileLayout && items.length >= 3) {
+    // Find optimal number of items per row (2-4 items)
+    // Prefer fewer items per row if they're similar sizes
+    let bestRowSize = 2;
+    
+    // If items are relatively uniform, use more items per row
+    const maxItem = Math.max(...items.map(i => i.normalizedValue));
+    const minItem = Math.min(...items.map(i => i.normalizedValue));
+    const uniformity = minItem / maxItem;
+    
+    if (uniformity > 0.5 && items.length >= 4) {
+      bestRowSize = 3;
+    } else if (uniformity > 0.7 && items.length >= 6) {
+      bestRowSize = 4;
+    }
+    
+    // Create rows
+    const rows: typeof items[] = [];
+    let currentRow: typeof items = [];
+    let currentRowSum = 0;
+    const targetRowSum = total / Math.ceil(items.length / bestRowSize);
+    
+    for (let i = 0; i < items.length; i++) {
+      currentRow.push(items[i]);
+      currentRowSum += items[i].normalizedValue;
+      
+      const shouldEndRow = 
+        currentRow.length >= bestRowSize || 
+        i === items.length - 1 ||
+        (currentRowSum >= targetRowSum * 0.8 && currentRow.length >= 2);
+      
+      if (shouldEndRow) {
+        rows.push([...currentRow]);
+        currentRow = [];
+        currentRowSum = 0;
+      }
+    }
+    
+    if (rows.length > 1) {
+      let currentY = y;
+      const results: (Rect & { data: T })[] = [];
+      
+      rows.forEach(row => {
+        const rowSum = row.reduce((sum, item) => sum + item.normalizedValue, 0);
+        const rowHeight = height * (rowSum / total);
+        
+        // Layout items horizontally in this row
+        let currentX = x;
+        row.forEach(item => {
+          const itemWidth = width * (item.normalizedValue / rowSum);
+          results.push({
+            x: currentX,
+            y: currentY,
+            width: itemWidth,
+            height: rowHeight,
+            data: item.data,
+          });
+          currentX += itemWidth;
+        });
+        
+        currentY += rowHeight;
+      });
+      
+      return results;
+    }
+  }
+
+  // Standard binary split
   let sum = 0;
   let splitIndex = 0;
   for (let i = 0; i < items.length; i++) {
@@ -106,17 +177,30 @@ function slice<T>(
     0,
   );
 
-  if (width >= height) {
+  // Mobile layout: prefer vertical stacking (horizontal slices)
+  if (forceMobileLayout) {
+    const leftHeight = height * (leftSum / total);
+    return [
+      ...slice(leftItems, x, y, width, leftHeight, forceMobileLayout),
+      ...slice(rightItems, x, y + leftHeight, width, height - leftHeight, forceMobileLayout),
+    ];
+  }
+
+  // Desktop: use aspect ratio-based decision
+  const aspectRatio = width / height;
+  const shouldSliceHorizontally = aspectRatio > 0.7;
+  
+  if (shouldSliceHorizontally) {
     const leftWidth = width * (leftSum / total);
     return [
-      ...slice(leftItems, x, y, leftWidth, height),
-      ...slice(rightItems, x + leftWidth, y, width - leftWidth, height),
+      ...slice(leftItems, x, y, leftWidth, height, forceMobileLayout),
+      ...slice(rightItems, x + leftWidth, y, width - leftWidth, height, forceMobileLayout),
     ];
   } else {
     const leftHeight = height * (leftSum / total);
     return [
-      ...slice(leftItems, x, y, width, leftHeight),
-      ...slice(rightItems, x, y + leftHeight, width, height - leftHeight),
+      ...slice(leftItems, x, y, width, leftHeight, forceMobileLayout),
+      ...slice(rightItems, x, y + leftHeight, width, height - leftHeight, forceMobileLayout),
     ];
   }
 }
@@ -154,8 +238,8 @@ export default function BudgetTreemap({
       
       let height;
       if (width < 640) {
-        // Mobile: use a more reasonable multiplier
-        height = 3000;
+        // Mobile: shorter height creates wider boxes for better label readability
+        height = 2000;
       } else if (width < 1024) {
         height = 1600;
       } else {
@@ -244,14 +328,14 @@ export default function BudgetTreemap({
     currentY += partHeight + (i < parts.length - 1 ? partGapPercent : 0);
   });
 
-  // Responsive thresholds for label display - with expanded mobile height, we can be more generous
+  // Responsive thresholds for label display - optimized for readability
   const getThresholds = () => {
-    if (typeof window === 'undefined') return { showAbbr: 15, showBudget: 20, minHeight: 20 };
+    if (typeof window === 'undefined') return { showBudget: 12 };
     const width = window.innerWidth;
-    // With 3x height on mobile, boxes are bigger so we can use lower % thresholds
-    if (width < 640) return { showAbbr: 1.5, showBudget: 5, minHeight: 4 };
-    if (width < 1024) return { showAbbr: 6, showBudget: 12, minHeight: 12 };
-    return { showAbbr: 15, showBudget: 20, minHeight: 20 };
+    // Only show budget info when box has sufficient space - requires both width AND height
+    if (width < 640) return { showBudget: 8 }; // Mobile: need decent space
+    if (width < 1024) return { showBudget: 10 }; // Tablet
+    return { showBudget: 12 }; // Desktop: comfortable reading space
   };
 
   const thresholds = getThresholds();
@@ -296,7 +380,7 @@ export default function BudgetTreemap({
             value: s.totalBudget,
             data: s,
           }));
-          const sectionRects = squarify<TreemapSection>(sectionItems, 0, 0, 100, 100);
+          const sectionRects = squarify<TreemapSection>(sectionItems, 0, 0, 100, 100, isMobile);
 
           return (
             <div
@@ -312,7 +396,7 @@ export default function BudgetTreemap({
                 const entityItems = section.entities
                   .sort((a, b) => b.budget - a.budget)
                   .map((e) => ({ value: e.budget, data: e }));
-                const entityRects = squarify<TreemapEntity>(entityItems, 0, 0, 100, 100);
+                const entityRects = squarify<TreemapEntity>(entityItems, 0, 0, 100, 100, isMobile);
 
                 return (
                   <div
@@ -327,8 +411,7 @@ export default function BudgetTreemap({
                   >
                     {entityRects.map((rect, i) => {
                       const isHovered = hoveredEntity === rect.data.id;
-                      const canShowLabel = rect.width > thresholds.showAbbr && rect.height > thresholds.minHeight;
-                      const canShowBudget = rect.width > thresholds.showBudget;
+                      const canShowBudget = rect.width > thresholds.showBudget && rect.height > thresholds.showBudget;
                       const displayText = rect.data.abbreviation || rect.data.name;
 
                       return (
@@ -347,23 +430,21 @@ export default function BudgetTreemap({
                           onMouseMove={(e) => !isMobile && handleMouseMove(e, rect.data)}
                           onMouseLeave={handleMouseLeave}
                         >
-                          {canShowLabel && (
-                            <div className="h-full w-full overflow-hidden p-1.5 sm:p-2 flex flex-col justify-start items-start">
-                              <div className="text-xs sm:text-sm leading-snug font-semibold text-white truncate w-full text-left">
-                                {displayText}
-                              </div>
-                              {canShowBudget && (
-                                <div className="text-[11px] sm:text-xs leading-snug text-white/95 truncate w-full text-left mt-1">
-                                  {formatBudget(rect.data.budget)}{" "}
-                                  {formatVariance(
-                                    rect.data.budgetItem[
-                                      "Variance (excluding resources redeployed for consolidation) – Compared with 2025 approved (percentage)"
-                                    ],
-                                  )}
-                                </div>
-                              )}
+                          <div className="h-full w-full overflow-hidden px-0.5 py-0 sm:px-1 sm:py-0.5 flex flex-col justify-start items-start">
+                            <div className="text-xs sm:text-sm leading-tight font-semibold text-white truncate w-full text-left">
+                              {displayText}
                             </div>
-                          )}
+                            {canShowBudget && (
+                              <div className="text-[10px] sm:text-xs leading-tight text-white/95 truncate w-full text-left">
+                                {formatBudget(rect.data.budget)}{" "}
+                                {formatVariance(
+                                  rect.data.budgetItem[
+                                    "Variance (excluding resources redeployed for consolidation) – Compared with 2025 approved (percentage)"
+                                  ],
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       );
                     })}

@@ -202,7 +202,7 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-gray-200 bg-white">
-        <div className="mx-auto max-w-7xl px-4 pt-4 pb-2 sm:px-6">
+        <div className="container-padding mx-auto max-w-[1400px] pt-4 pb-2">
           <h1 className="text-2xl text-foreground sm:text-3xl">
             <span className="font-bold">UN Budget</span>{" "}
             <span className="font-base">Explorer</span>
@@ -214,7 +214,7 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+      <main className="container-padding mx-auto max-w-[1400px] py-8">
         {/* Intro Section */}
         <section className="mb-8">
           <p className="max-w-3xl leading-relaxed text-gray-700">
