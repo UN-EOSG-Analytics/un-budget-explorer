@@ -201,8 +201,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-gray-200 bg-white px-4 py-6 sm:px-6">
-        <div className="mx-auto flex max-w-7xl items-center gap-4">
+      <header className="border-b border-gray-200 bg-white">
+        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-6 sm:px-6">
           <Image
             src={`${basePath}/images/UN_Logo_Stacked_Colour_English.svg`}
             alt="UN Logo"
