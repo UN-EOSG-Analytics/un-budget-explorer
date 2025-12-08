@@ -8,30 +8,26 @@ interface BudgetOverviewProps {
   grandTotal: BudgetItem;
 }
 
+const VarianceBadge = ({ value }: { value: number | null }) => (
+  <span
+    className={`rounded px-1.5 py-0.5 text-xs font-medium whitespace-nowrap ${
+      (value ?? 0) < 0
+        ? "bg-red-100 text-red-700"
+        : (value ?? 0) > 0
+          ? "bg-green-100 text-green-700"
+          : "bg-gray-100 text-gray-600"
+    }`}
+  >
+    {formatVariance(value)}
+  </span>
+);
+
 export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
   const b = grandTotal;
   const varianceVs2025 =
     b[
       "Variance (excluding resources redeployed for consolidation) – Compared with 2025 approved (percentage)"
     ];
-  const varianceVsProposed =
-    b[
-      "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)"
-    ];
-
-  const VarianceBadge = ({ value }: { value: number | null }) => (
-    <span
-      className={`rounded px-1.5 py-0.5 text-xs font-medium whitespace-nowrap ${
-        (value ?? 0) < 0
-          ? "bg-red-100 text-red-700"
-          : (value ?? 0) > 0
-            ? "bg-green-100 text-green-700"
-            : "bg-gray-100 text-gray-600"
-      }`}
-    >
-      {formatVariance(value)}
-    </span>
-  );
 
   return (
     <section className="mb-12">
@@ -65,7 +61,7 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
           </div>
         </div>
 
-        {/* Variance arrows using SVG */}
+        {/* Variance arrow using SVG */}
         <div className="relative mt-2 h-14">
           <svg
             className="absolute inset-0 h-full w-full"
@@ -74,54 +70,31 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
             <defs>
               <marker
                 id="arrowhead-overview"
-                markerWidth="6"
-                markerHeight="6"
+                markerWidth="10"
+                markerHeight="10"
                 refX="5"
-                refY="3"
+                refY="5"
                 orient="auto"
               >
-                <path
-                  d="M0,0 L6,3 L0,6"
-                  fill="none"
-                  stroke="#9ca3af"
-                  strokeWidth="1.5"
+                <polygon
+                  points="0,0 10,5 0,10"
+                  fill="#9ca3af"
                 />
               </marker>
             </defs>
             <line
               x1="16.67%"
-              y1="25%"
+              y1="50%"
               x2="83.33%"
-              y2="25%"
+              y2="50%"
               stroke="#d1d5db"
               strokeWidth="1"
               markerEnd="url(#arrowhead-overview)"
             />
-            <line
-              x1="50%"
-              y1="75%"
-              x2="83.33%"
-              y2="75%"
-              stroke="#d1d5db"
-              strokeWidth="1"
-              markerEnd="url(#arrowhead-overview)"
-            />
-            <circle cx="16.67%" cy="25%" r="3" fill="#9ca3af" />
-            <circle cx="50%" cy="75%" r="3" fill="#9ca3af" />
+            <circle cx="16.67%" cy="50%" r="3" fill="#9ca3af" />
           </svg>
-          <div className="pointer-events-none absolute inset-0 flex flex-col justify-around">
-            <div
-              className="flex justify-center"
-              style={{ paddingLeft: "16.67%", paddingRight: "16.67%" }}
-            >
-              <VarianceBadge value={varianceVs2025} />
-            </div>
-            <div
-              className="flex justify-center"
-              style={{ paddingLeft: "50%", paddingRight: "16.67%" }}
-            >
-              <VarianceBadge value={varianceVsProposed} />
-            </div>
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <VarianceBadge value={varianceVs2025} />
           </div>
         </div>
       </div>
