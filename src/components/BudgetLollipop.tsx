@@ -1,8 +1,8 @@
 "use client";
 
+import SectionHeading from "@/components/SectionHeading";
 import { BudgetItem, TreemapEntity } from "@/types";
 import { useState } from "react";
-import SectionHeading from "@/components/SectionHeading";
 
 interface LollipopRow {
   id: string;
@@ -51,18 +51,6 @@ const formatMoney = (val: number): string => {
 const formatPercent = (val: number): string => {
   const sign = val > 0 ? "+" : "";
   return `${sign}${val.toFixed(1)}%`;
-};
-
-// Get arrow for variance
-const getVarianceArrow = (value: number | null): string => {
-  if (value === null || value === undefined) return "";
-  return value > 0 ? "↗" : value < 0 ? "↘" : "→";
-};
-
-// Format just the percentage (no arrow)
-const formatVarianceNum = (value: number | null): string => {
-  if (value === null || value === undefined) return "";
-  return `${Math.abs(value).toFixed(1)}%`;
 };
 
 const getNumeral = (partKey: string) => partKey.replace("Part ", "");
@@ -241,8 +229,7 @@ export default function BudgetLollipop({
   };
 
   const ROW_HEIGHT = 28;
-  const LABEL_WIDTH = 300;
-  const VARIANCE_WIDTH = 70;
+  const LABEL_WIDTH = 400;
 
   return (
     <div className="mt-12">
@@ -252,25 +239,22 @@ export default function BudgetLollipop({
       />
 
       <div className="relative">
-        {/* Header with ticks */}
-        <div className="mb-2 flex items-center border-b pb-2 text-xs text-gray-500">
+        {/* Header with legend on the right */}
+        <div className="mb-2 flex items-center justify-between border-b pb-2 text-xs text-gray-500">
           <div style={{ width: LABEL_WIDTH }} className="flex-shrink-0" />
-          <div
-            style={{ width: VARIANCE_WIDTH }}
-            className="flex-shrink-0 text-center"
-          >
-            Δ 2025
-          </div>
-          <div className="relative h-4 flex-1">
-            {ticks.map((tick) => (
-              <span
-                key={tick}
-                className="absolute -translate-x-1/2 transform"
-                style={{ left: `${scale(tick)}%` }}
-              >
-                {formatMoney(tick)}
-              </span>
-            ))}
+          <div className="flex items-center gap-6 text-gray-600">
+            <div className="flex items-center gap-2">
+              <div className="h-3 w-3 rounded-full border-2 border-white bg-gray-600 shadow" />
+              <span>2025 Approved</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full bg-un-blue/50" />
+              <span>2026 Proposed</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-3 w-3 rounded-full border-2 border-white bg-un-blue shadow" />
+              <span>2026 Revised</span>
+            </div>
           </div>
         </div>
 
@@ -291,8 +275,6 @@ export default function BudgetLollipop({
               key={row.id}
               className={`flex items-center ${isClickable ? "cursor-pointer hover:bg-gray-50" : ""}`}
               style={{ height: ROW_HEIGHT }}
-              onMouseMove={(e) => handleMouseMove(e, row)}
-              onMouseLeave={() => setTooltip(null)}
               onClick={() => handleRowClick(row)}
             >
               {/* Label */}
@@ -313,21 +295,15 @@ export default function BudgetLollipop({
                 <span className="truncate">{row.label}</span>
               </div>
 
-              {/* Variance column - arrow and percentage in separate columns */}
-              <div
-                className="flex flex-shrink-0 text-xs text-gray-900"
-                style={{ width: VARIANCE_WIDTH }}
-              >
-                <span className="w-4 text-center">
-                  {getVarianceArrow(variance)}
-                </span>
-                <span className="flex-1 pr-2 text-right">
-                  {formatVarianceNum(variance)}
-                </span>
-              </div>
-
               {/* Chart area */}
-              <div className="relative h-full flex-1">
+              <div 
+                className="relative h-full flex-1"
+                onMouseMove={(e) => handleMouseMove(e, row)}
+                onMouseLeave={() => setTooltip(null)}
+              >
+                {/* Horizontal grid line */}
+                <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-100" />
+
                 {/* Tick lines */}
                 {ticks.map((tick) => (
                   <div
@@ -346,6 +322,31 @@ export default function BudgetLollipop({
                     transform: "translateY(-50%)",
                   }}
                 />
+
+                {/* Subtle arrow centered within the connecting line */}
+                {variance !== null && variance !== 0 && (
+                  <div
+                    className="absolute top-1/2"
+                    style={{
+                      left: `${(scale(row.approved2025) + scale(row.revised2026)) / 2}%`,
+                      transform: variance < 0 
+                        ? "translate(-50%, -50%)"
+                        : "translate(-50%, -50%) rotate(180deg)",
+                    }}
+                  >
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 10 10"
+                      className="text-gray-300"
+                    >
+                      <path
+                        d="M 0 5 L 9 1 L 9 9 Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </div>
+                )}
 
                 {/* 2026 proposed (small dot) */}
                 <div
@@ -373,24 +374,38 @@ export default function BudgetLollipop({
                     transform: "translate(-50%, -50%)",
                   }}
                 />
+
+                {/* Percentage label next to revised dot */}
+                {variance !== null && (
+                  <div
+                    className="absolute top-1/2 text-xs font-medium text-gray-600"
+                    style={{
+                      left: `${Math.max(scale(row.revised2026), scale(row.approved2025))}%`,
+                      transform: "translateY(-50%)",
+                      marginLeft: "12px",
+                    }}
+                  >
+                    {formatPercent(variance)}
+                  </div>
+                )}
               </div>
             </div>
           );
         })}
 
-        {/* Legend */}
-        <div className="mt-6 flex items-center gap-6 text-xs text-gray-600">
-          <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-full border-2 border-white bg-gray-600 shadow" />
-            <span>2025 Approved</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-un-blue/50" />
-            <span>2026 Proposed</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-full border-2 border-white bg-un-blue shadow" />
-            <span>2026 Revised</span>
+        {/* X-axis labels */}
+        <div className="mt-2 flex items-center text-xs text-gray-500">
+          <div style={{ width: LABEL_WIDTH }} className="flex-shrink-0" />
+          <div className="relative h-4 flex-1">
+            {ticks.map((tick) => (
+              <span
+                key={tick}
+                className="absolute -translate-x-1/2 transform"
+                style={{ left: `${scale(tick)}%` }}
+              >
+                {formatMoney(tick)}
+              </span>
+            ))}
           </div>
         </div>
       </div>
