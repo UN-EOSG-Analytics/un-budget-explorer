@@ -1,7 +1,7 @@
 [project]
-name = "un-website-boilerplate"
+name = "un-budget-explorer"
 version = "0.1.0"
-description = "UN Website Boilerplate"
+description = "UN Budget Explorer"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

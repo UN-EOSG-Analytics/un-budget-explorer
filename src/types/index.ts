@@ -1,20 +1,28 @@
 export interface BudgetItem {
-  row_type: 'grand_total' | 'part_total' | 'section_total' | 'entity_total';
+  row_type: "grand_total" | "part_total" | "section_total" | "entity_total";
   Part: string;
-  'Part name': string;
+  "Part name": string;
   Section: string | null;
-  'Section name': string | null;
-  'Entity name': string | null;
-  '2025 approved': number;
-  '2026 proposed programme budget': number;
-  'UN80 changes (excluding transitional capacities) – Relocation': number | null;
-  'UN80 changes (excluding transitional capacities) – Consolidation': number | null;
-  'UN80 changes (excluding transitional capacities) – Other': number | null;
-  'UN80 changes (excluding transitional capacities) – Total': number | null;
-  '2026 revised estimate': number;
-  'Variance (excluding resources redeployed for consolidation) – Compared with 2025 approved (percentage)': number | null;
-  'Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)': number | null;
-  'Transitional capacities': number | null;
+  "Section name": string | null;
+  "Entity name": string | null;
+  "2025 approved": number;
+  "2026 proposed programme budget": number;
+  "UN80 changes (excluding transitional capacities) – Relocation":
+    | number
+    | null;
+  "UN80 changes (excluding transitional capacities) – Consolidation":
+    | number
+    | null;
+  "UN80 changes (excluding transitional capacities) – Other": number | null;
+  "UN80 changes (excluding transitional capacities) – Total": number | null;
+  "2026 revised estimate": number;
+  "Variance (excluding resources redeployed for consolidation) – Compared with 2025 approved (percentage)":
+    | number
+    | null;
+  "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":
+    | number
+    | null;
+  "Transitional capacities": number | null;
   footnotes: string | null;
   chapter_title: string | null;
   abbreviation: string | null;
@@ -69,4 +77,3 @@ export interface TreemapPart {
   approved2025: number;
   varianceVs2025: number;
 }
-
