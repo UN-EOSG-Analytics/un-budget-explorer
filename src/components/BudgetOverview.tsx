@@ -2,6 +2,7 @@
 
 import { BudgetItem } from "@/types";
 import { formatMoney, formatVariance, getArrow } from "@/lib/format";
+import SectionHeading from "@/components/SectionHeading";
 
 interface BudgetOverviewProps {
   grandTotal: BudgetItem;
@@ -34,13 +35,10 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
 
   return (
     <section className="mb-12">
-      <h2 className="mb-4 text-lg font-semibold text-gray-900">
-        Total Budget Evolution
-      </h2>
-      <p className="mb-6 text-sm text-gray-600">
-        Overview of the 2026 revised estimates compared to 2025 approved and
-        2026 proposed budgets.
-      </p>
+      <SectionHeading
+        title="Total Budget Evolution"
+        description="Overview of the 2026 revised estimates compared to 2025 approved and 2026 proposed budgets."
+      />
 
       <div className="max-w-2xl">
         {/* Three boxes in a row */}

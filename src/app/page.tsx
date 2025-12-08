@@ -4,11 +4,12 @@ import BudgetLollipop from "@/components/BudgetLollipop";
 import BudgetOverview from "@/components/BudgetOverview";
 import BudgetTreemap from "@/components/BudgetTreemap";
 import EntityModal from "@/components/EntityModal";
+import SectionHeading from "@/components/SectionHeading";
 import {
-    BudgetItem,
-    TreemapEntity,
-    TreemapPart,
-    TreemapSection,
+  BudgetItem,
+  TreemapEntity,
+  TreemapPart,
+  TreemapSection,
 } from "@/types";
 import { useEffect, useMemo, useState } from "react";
 
@@ -201,7 +202,7 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-gray-200 bg-white">
-        <div className="mx-auto max-w-7xl px-4 pt-6 pb-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 pt-4 pb-2 sm:px-6">
           <h1 className="text-2xl text-foreground sm:text-3xl">
             <span className="font-bold">UN Budget</span>{" "}
             <span className="font-base">Explorer</span>
@@ -234,13 +235,10 @@ export default function Home() {
 
         {/* Treemap Section */}
         <section className="mb-16">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">
-            Budget Overview According to Revised Estimates 2026
-          </h2>
-          <p className="mb-6 text-sm text-gray-600">
-            Area represents 2026 revised estimate. Click on any entity for
-            details.
-          </p>
+          <SectionHeading
+            title="Budget Overview According to Revised Estimates 2026"
+            description="Area represents 2026 revised estimate. Click on any entity for details."
+          />
           {loading ? (
             <div className="flex h-[1200px] items-center justify-center">
               <div className="text-gray-500">Loading budget data...</div>

@@ -2,6 +2,7 @@
 
 import { BudgetItem, TreemapEntity } from "@/types";
 import { useState } from "react";
+import SectionHeading from "@/components/SectionHeading";
 
 interface LollipopRow {
   id: string;
@@ -245,12 +246,10 @@ export default function BudgetLollipop({
 
   return (
     <div className="mt-12">
-      <h2 className="mb-4 text-lg font-semibold text-gray-900">
-        Budget Comparison: Revised Estimates 2026 vs Approved 2025
-      </h2>
-      <p className="mb-6 text-sm text-gray-600">
-        Click on parts or sections to expand breakdown. Hover for details.
-      </p>
+      <SectionHeading
+        title="Budget Comparison: Revised Estimates 2026 vs Approved 2025"
+        description="Click on parts or sections to expand breakdown. Hover for details."
+      />
 
       <div className="relative">
         {/* Header with ticks */}
