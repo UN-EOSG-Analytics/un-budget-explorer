@@ -1,7 +1,7 @@
 "use client";
 
 import { TreemapPart, TreemapSection, TreemapEntity } from "@/types";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 const PART_COLORS: Record<string, { bg: string; hover: string }> = {
   "Part I": { bg: "#009edb", hover: "#007ab8" },
@@ -46,8 +46,7 @@ interface Rect {
   height: number;
 }
 
-const PART_GAP = 2; // Gap between parts in pixels
-const TREEMAP_HEIGHT = 1200;
+const PART_GAP = 2;
 
 // Format variance with arrow
 const formatVariance = (value: number | null): string => {
@@ -56,7 +55,7 @@ const formatVariance = (value: number | null): string => {
   return `${arrow}${Math.abs(value).toFixed(1)}%`;
 };
 
-// Simple squarify without gap handling - gaps applied via CSS
+// Simple squarify
 function squarify<T>(
   items: { value: number; data: T }[],
   x: number,
@@ -137,11 +136,42 @@ export default function BudgetTreemap({
     y: number;
     entity: TreemapEntity;
   } | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [treemapHeight, setTreemapHeight] = useState(1200);
 
   const totalBudget = useMemo(
     () => parts.reduce((sum, p) => sum + p.totalBudget, 0),
     [parts],
   );
+
+  // Single effect to handle all client-side initialization
+  useEffect(() => {
+    const updateLayout = () => {
+      const width = window.innerWidth;
+      const mobile = width < 640;
+      setIsMobile(mobile);
+      
+      let height;
+      if (width < 640) {
+        // Mobile: use a more reasonable multiplier
+        height = 3000;
+      } else if (width < 1024) {
+        height = 1600;
+      } else {
+        height = 1200;
+      }
+      
+      console.log('🔍 Treemap layout update:', { width, mobile, height, parts: parts.length });
+      setTreemapHeight(height);
+    };
+    
+    updateLayout();
+    setMounted(true);
+    
+    window.addEventListener('resize', updateLayout);
+    return () => window.removeEventListener('resize', updateLayout);
+  }, [parts.length]);
 
   const formatBudget = (amount: number): string => {
     if (amount >= 1_000_000) {
@@ -153,26 +183,60 @@ export default function BudgetTreemap({
   };
 
   const handleMouseMove = (e: React.MouseEvent, entity: TreemapEntity) => {
-    setTooltip({ x: e.clientX, y: e.clientY, entity });
+    if (!isMobile) {
+      setTooltip({ x: e.clientX, y: e.clientY, entity });
+    }
   };
 
   const handleMouseLeave = () => {
-    setHoveredEntity(null);
-    setTooltip(null);
+    if (!isMobile) {
+      setHoveredEntity(null);
+      setTooltip(null);
+    }
   };
+
+  const handleClick = (entity: TreemapEntity) => {
+    if (isMobile) {
+      // Toggle tooltip on mobile
+      if (tooltip?.entity.id === entity.id) {
+        setTooltip(null);
+        setHoveredEntity(null);
+      } else {
+        setTooltip({
+          x: window.innerWidth / 2,
+          y: window.innerHeight / 2,
+          entity,
+        });
+        setHoveredEntity(entity.id);
+      }
+    } else {
+      // Open modal on desktop
+      onEntityClick(entity);
+    }
+  };
+
+  if (!mounted) {
+    return (
+      <div className="flex items-center justify-center h-[1200px] bg-gray-50">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-un-blue border-r-transparent mb-2"></div>
+          <p className="text-sm text-gray-600">Loading treemap...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (parts.length === 0) {
     return (
-      <div className="flex h-[1200px] items-center justify-center">
+      <div className="flex items-center justify-center" style={{ height: `${treemapHeight}px` }}>
         <p className="text-lg text-gray-500">No budget data available</p>
       </div>
     );
   }
 
   // Calculate part heights with gaps
-  const partGapPercent = (PART_GAP / TREEMAP_HEIGHT) * 100;
-  const partHeights: { part: TreemapPart; startY: number; height: number }[] =
-    [];
+  const partGapPercent = (PART_GAP / treemapHeight) * 100;
+  const partHeights: { part: TreemapPart; startY: number; height: number }[] = [];
   let currentY = 0;
   parts.forEach((part, i) => {
     const partHeight = (part.totalBudget / totalBudget) * 100;
@@ -180,12 +244,47 @@ export default function BudgetTreemap({
     currentY += partHeight + (i < parts.length - 1 ? partGapPercent : 0);
   });
 
+  // Responsive thresholds for label display - with expanded mobile height, we can be more generous
+  const getThresholds = () => {
+    if (typeof window === 'undefined') return { showAbbr: 15, showBudget: 20, minHeight: 20 };
+    const width = window.innerWidth;
+    // With 3x height on mobile, boxes are bigger so we can use lower % thresholds
+    if (width < 640) return { showAbbr: 1.5, showBudget: 5, minHeight: 4 };
+    if (width < 1024) return { showAbbr: 6, showBudget: 12, minHeight: 12 };
+    return { showAbbr: 15, showBudget: 20, minHeight: 20 };
+  };
+
+  const thresholds = getThresholds();
+
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-col gap-2 lg:flex-row">
+      {/* Mobile legend - always at top on small screens */}
+      <div className="block sm:hidden space-y-2 px-2 py-3 bg-gray-50 rounded">
+        <div className="text-xs font-medium text-gray-700">Budget Sections</div>
+        <div className="flex flex-wrap gap-x-3 gap-y-1.5">
+          {partHeights.map(({ part }) => {
+            const colors = PART_COLORS[part.part] || PART_COLORS["Part I"];
+            const numeral = getNumeral(part.part);
+            const name = PART_SHORT_NAMES[part.part] || part.partName;
+            return (
+              <div key={`mobile-${part.part}`} className="flex items-center gap-1.5">
+                <div
+                  className="h-3 w-3 rounded shrink-0"
+                  style={{ backgroundColor: colors.bg }}
+                />
+                <span className="text-xs" style={{ color: colors.bg }}>
+                  {numeral}. {name}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Treemap */}
       <div
-        className="relative flex-1 bg-gray-100"
-        style={{ height: `${TREEMAP_HEIGHT}px` }}
+        className="relative w-full lg:flex-1 bg-gray-100 rounded overflow-hidden"
+        style={{ height: `${treemapHeight}px` }}
       >
         {partHeights.map(({ part, startY, height }) => {
           const colors = PART_COLORS[part.part] || PART_COLORS["Part I"];
@@ -193,23 +292,16 @@ export default function BudgetTreemap({
 
           if (sections.length === 0) return null;
 
-          // Layout sections within the part (no gaps in algorithm)
           const sectionItems = sections.map((s) => ({
             value: s.totalBudget,
             data: s,
           }));
-          const sectionRects = squarify<TreemapSection>(
-            sectionItems,
-            0,
-            0,
-            100,
-            100,
-          );
+          const sectionRects = squarify<TreemapSection>(sectionItems, 0, 0, 100, 100);
 
           return (
             <div
               key={part.part}
-              className="absolute right-0 left-0"
+              className="absolute left-0 right-0"
               style={{
                 top: `${startY}%`,
                 height: `${height}%`,
@@ -217,23 +309,14 @@ export default function BudgetTreemap({
             >
               {sectionRects.map((sectionRect, si) => {
                 const section = sectionRect.data;
-
-                // Layout entities within this section (no gaps in algorithm)
                 const entityItems = section.entities
                   .sort((a, b) => b.budget - a.budget)
                   .map((e) => ({ value: e.budget, data: e }));
-
-                const entityRects = squarify<TreemapEntity>(
-                  entityItems,
-                  0,
-                  0,
-                  100,
-                  100,
-                );
+                const entityRects = squarify<TreemapEntity>(entityItems, 0, 0, 100, 100);
 
                 return (
                   <div
-                    key={`section-${section.section}-${si}`}
+                    key={`${section.section}-${si}`}
                     className="absolute"
                     style={{
                       left: `${sectionRect.x}%`,
@@ -244,34 +327,33 @@ export default function BudgetTreemap({
                   >
                     {entityRects.map((rect, i) => {
                       const isHovered = hoveredEntity === rect.data.id;
-                      const showLabel = rect.width > 15 && rect.height > 20;
-                      const showBudget = rect.width > 20 && rect.height > 28;
+                      const canShowLabel = rect.width > thresholds.showAbbr && rect.height > thresholds.minHeight;
+                      const canShowBudget = rect.width > thresholds.showBudget;
+                      const displayText = rect.data.abbreviation || rect.data.name;
 
                       return (
                         <div
                           key={`${rect.data.id}-${i}`}
-                          className="absolute box-border cursor-pointer border border-gray-100 transition-colors duration-100"
+                          className="absolute cursor-pointer border border-white/30 transition-all duration-150 hover:z-10"
                           style={{
                             left: `${rect.x}%`,
                             top: `${rect.y}%`,
                             width: `${rect.width}%`,
                             height: `${rect.height}%`,
-                            backgroundColor: isHovered
-                              ? colors.hover
-                              : colors.bg,
+                            backgroundColor: isHovered ? colors.hover : colors.bg,
                           }}
-                          onClick={() => onEntityClick(rect.data)}
-                          onMouseEnter={() => setHoveredEntity(rect.data.id)}
-                          onMouseMove={(e) => handleMouseMove(e, rect.data)}
+                          onClick={() => handleClick(rect.data)}
+                          onMouseEnter={() => !isMobile && setHoveredEntity(rect.data.id)}
+                          onMouseMove={(e) => !isMobile && handleMouseMove(e, rect.data)}
                           onMouseLeave={handleMouseLeave}
                         >
-                          {showLabel && (
-                            <div className="h-full overflow-hidden p-2">
-                              <div className="truncate text-xs leading-tight font-medium text-white">
-                                {rect.data.abbreviation || rect.data.name}
+                          {canShowLabel && (
+                            <div className="h-full w-full overflow-hidden p-1.5 sm:p-2 flex flex-col justify-start items-start">
+                              <div className="text-xs sm:text-sm leading-snug font-semibold text-white truncate w-full text-left">
+                                {displayText}
                               </div>
-                              {showBudget && (
-                                <div className="mt-0.5 truncate text-xs leading-tight text-white/80">
+                              {canShowBudget && (
+                                <div className="text-[11px] sm:text-xs leading-snug text-white/95 truncate w-full text-left mt-1">
                                   {formatBudget(rect.data.budget)}{" "}
                                   {formatVariance(
                                     rect.data.budgetItem[
@@ -293,20 +375,15 @@ export default function BudgetTreemap({
         })}
       </div>
 
-      {/* Part Labels */}
+      {/* Desktop labels */}
       <div
-        className="relative w-60 flex-shrink-0"
-        style={{ height: `${TREEMAP_HEIGHT}px` }}
+        className="relative w-60 shrink-0 hidden lg:block"
+        style={{ height: `${treemapHeight}px` }}
       >
         {partHeights.map(({ part, startY }) => {
           const colors = PART_COLORS[part.part] || PART_COLORS["Part I"];
           const isCompact = [
-            "Part IX",
-            "Part X",
-            "Part XI",
-            "Part XII",
-            "Part XIII",
-            "Part XIV",
+            "Part IX", "Part X", "Part XI", "Part XII", "Part XIII", "Part XIV",
           ].includes(part.part);
           const numeral = getNumeral(part.part);
           const name = PART_SHORT_NAMES[part.part] || part.partName;
@@ -320,8 +397,7 @@ export default function BudgetTreemap({
               <span className="w-6 font-medium">{numeral}.</span>
               <span className="font-medium">{name}</span>
               <span className="ml-3">
-                {formatBudget(part.totalBudget)}{" "}
-                {formatVariance(part.varianceVs2025)}
+                {formatBudget(part.totalBudget)} {formatVariance(part.varianceVs2025)}
               </span>
             </div>
           ) : (
@@ -334,8 +410,7 @@ export default function BudgetTreemap({
               <div>
                 <div className="font-medium">{name}</div>
                 <div className="mt-0.5">
-                  {formatBudget(part.totalBudget)}{" "}
-                  {formatVariance(part.varianceVs2025)}
+                  {formatBudget(part.totalBudget)} {formatVariance(part.varianceVs2025)}
                 </div>
               </div>
             </div>
@@ -343,30 +418,65 @@ export default function BudgetTreemap({
         })}
       </div>
 
-      {/* Tooltip */}
-      {tooltip && (
+      {/* Mobile tooltip */}
+      {tooltip && isMobile && (
+        <div className="fixed inset-x-4 bottom-4 z-50 rounded-lg border border-gray-200 bg-white p-4 shadow-2xl">
+          <button
+            onClick={() => {
+              setTooltip(null);
+              setHoveredEntity(null);
+            }}
+            className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-gray-100"
+            aria-label="Close"
+          >
+            <svg className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <div className="pr-8">
+            <p className="text-sm font-medium text-gray-900 leading-tight">
+              {tooltip.entity.entityName || tooltip.entity.name}
+            </p>
+            {tooltip.entity.abbreviation && (
+              <p className="text-xs text-gray-600 mt-0.5">{tooltip.entity.abbreviation}</p>
+            )}
+            <p className="text-xs text-gray-500 mt-2">{tooltip.entity.partName}</p>
+            <p className="text-xs text-gray-500">
+              Section {tooltip.entity.section}: {tooltip.entity.sectionName}
+            </p>
+            <p className="text-sm font-medium text-gray-900 mt-2">
+              {formatBudget(tooltip.entity.budget)}
+            </p>
+            <button
+              onClick={() => onEntityClick(tooltip.entity)}
+              className="mt-3 w-full py-2 px-4 bg-un-blue text-white text-sm font-medium rounded hover:bg-un-blue/90"
+            >
+              View Details
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Desktop tooltip */}
+      {tooltip && !isMobile && (
         <div
           className="pointer-events-none fixed z-50 max-w-xs rounded-lg border border-gray-200 bg-white px-3 py-2 shadow-lg"
           style={{
-            left: tooltip.x + 12,
-            top: tooltip.y + 12,
+            left: Math.min(tooltip.x + 12, window.innerWidth - 320),
+            top: Math.min(tooltip.y + 12, window.innerHeight - 200),
           }}
         >
-          <p className="text-sm leading-tight font-medium text-gray-900">
+          <p className="text-sm font-medium text-gray-900 leading-tight">
             {tooltip.entity.entityName || tooltip.entity.name}
           </p>
           {tooltip.entity.abbreviation && (
-            <p className="text-xs text-gray-500">
-              {tooltip.entity.abbreviation}
-            </p>
+            <p className="text-xs text-gray-600 mt-0.5">{tooltip.entity.abbreviation}</p>
           )}
-          <p className="mt-1 text-xs text-gray-500">
-            {tooltip.entity.partName}
-          </p>
-          <p className="text-xs text-gray-600">
+          <p className="text-xs text-gray-500 mt-1">{tooltip.entity.partName}</p>
+          <p className="text-xs text-gray-500">
             Section {tooltip.entity.section}: {tooltip.entity.sectionName}
           </p>
-          <p className="mt-1 text-xs font-medium text-gray-700">
+          <p className="text-xs font-medium text-gray-700 mt-1">
             {formatBudget(tooltip.entity.budget)}
           </p>
         </div>
