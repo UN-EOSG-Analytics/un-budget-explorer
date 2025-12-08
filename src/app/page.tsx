@@ -220,7 +220,7 @@ export default function Home() {
           <p className="max-w-3xl leading-relaxed text-gray-700">
             For additional details consult the source document:{" "}
             <a
-              href="https://documents.un.org/symbol-explorer?s=A/80/400&i=A/80/400_1759797069261"
+              href="https://docs.un.org/en/A/80/400"
               target="_blank"
               rel="noopener noreferrer"
               className="text-un-blue hover:underline"
