@@ -1,6 +1,7 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 // https://fonts.google.com/specimen/Roboto
@@ -11,10 +12,10 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Budget Explorer",
+  title: "UN Budget Explorer",
   description: "Explore the United Nations programme budget",
   openGraph: {
-    title: "Budget Explorer",
+    title: "UN Budget Explorer",
     description: "Explore the United Nations programme budget",
     type: "website",
     locale: "en_US",
@@ -34,8 +35,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${roboto.className} antialiased`}>
-      <body>
+      <body className="flex min-h-screen flex-col">
         {children}
+        <Footer />
         <GoogleAnalytics gaId="G-XYZ" />
       </body>
     </html>
