@@ -1,7 +1,8 @@
 import type { NextConfig } from 'next'
 
-// Set to your repository name for GitHub Pages, or '' for custom domain
-const basePath = process.env.NODE_ENV === 'production' ? (process.env.BASE_PATH || '/un-budget-explorer') : ''
+// Set to '' for custom domain (programmebudget.info), or '/un-budget-explorer' for GitHub Pages subdirectory
+// When using a custom domain with GitHub Pages, basePath should be empty
+const basePath = process.env.NODE_ENV === 'production' ? (process.env.BASE_PATH || '') : ''
 
 // NOTE: use basePath variable for Image src 
 // https://nextjs.org/docs/app/api-reference/config/next-config-js/basePath#images
