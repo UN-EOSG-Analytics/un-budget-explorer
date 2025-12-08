@@ -1,17 +1,16 @@
 "use client";
 
-import Image from "next/image";
-import { useState, useEffect, useMemo } from "react";
+import BudgetLollipop from "@/components/BudgetLollipop";
 import BudgetOverview from "@/components/BudgetOverview";
 import BudgetTreemap from "@/components/BudgetTreemap";
-import BudgetLollipop from "@/components/BudgetLollipop";
 import EntityModal from "@/components/EntityModal";
 import {
-  BudgetItem,
-  TreemapPart,
-  TreemapSection,
-  TreemapEntity,
+    BudgetItem,
+    TreemapEntity,
+    TreemapPart,
+    TreemapSection,
 } from "@/types";
+import { useEffect, useMemo, useState } from "react";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
@@ -202,23 +201,14 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-gray-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-6 sm:px-6">
-          <Image
-            src={`${basePath}/images/UN_Logo_Stacked_Colour_English.svg`}
-            alt="UN Logo"
-            width={48}
-            height={48}
-            className="h-10 w-auto select-none"
-            draggable={false}
-          />
-          <div>
-            <h1 className="text-lg font-bold text-foreground sm:text-xl">
-              Budget Explorer
-            </h1>
-            <p className="text-xs text-gray-500 sm:text-sm">
-              Revised Estimates for 2026
-            </p>
-          </div>
+        <div className="mx-auto max-w-7xl px-4 pt-6 pb-4 sm:px-6">
+          <h1 className="text-2xl text-foreground sm:text-3xl">
+            <span className="font-bold">UN Budget</span>{" "}
+            <span className="font-base">Explorer</span>
+          </h1>
+          <p className="text-sm text-gray-500 sm:text-base">
+            Revised Estimates for 2026
+          </p>
         </div>
       </header>
 
@@ -227,14 +217,14 @@ export default function Home() {
         {/* Intro Section */}
         <section className="mb-8">
           <p className="max-w-3xl leading-relaxed text-gray-700">
-            For additional details consult the source document of the{" "}
+            For additional details consult the source document:{" "}
             <a
               href="https://documents.un.org/symbol-explorer?s=A/80/400&i=A/80/400_1759797069261"
               target="_blank"
               rel="noopener noreferrer"
               className="text-un-blue hover:underline"
             >
-              Revised Estimates 2026 (A/80/400).
+              Revised Estimates 2026 (A/80/400)
             </a>
           </p>
         </section>
