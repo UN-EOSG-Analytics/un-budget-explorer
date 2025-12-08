@@ -194,7 +194,8 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
               <p className="text-xs text-gray-400">
                 Section {entity.section}: {entity.sectionName}
               </p>
-              {entity.abbreviation && (
+              {/* Hidden for now - System Chart link */}
+              {/* {entity.abbreviation && (
                 <a
                   href={`https://systemchart.un.org/?entity=${entity.abbreviation.toLowerCase()}`}
                   target="_blank"
@@ -203,7 +204,7 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
                 >
                   View on System Chart →
                 </a>
-              )}
+              )} */}
             </div>
             <button
               onClick={handleClose}
