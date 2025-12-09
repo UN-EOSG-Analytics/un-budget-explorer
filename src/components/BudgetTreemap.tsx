@@ -441,7 +441,7 @@ export default function BudgetTreemap({
 
       {/* Treemap */}
       <div
-        className="relative w-full overflow-hidden rounded bg-gray-100 lg:flex-1"
+        className="relative w-full overflow-hidden lg:flex-1"
         style={{ height: `${treemapHeight}px` }}
       >
         {partHeights.map(({ part, startY, height }) => {
@@ -508,7 +508,7 @@ export default function BudgetTreemap({
                       return (
                         <div
                           key={`${rect.data.id}-${i}`}
-                          className="absolute cursor-pointer border border-white/30 transition-all duration-150 hover:z-10"
+                          className="absolute cursor-pointer transition-colors duration-150"
                           style={{
                             left: `${rect.x}%`,
                             top: `${rect.y}%`,
@@ -517,6 +517,7 @@ export default function BudgetTreemap({
                             backgroundColor: isHovered
                               ? colors.hover
                               : colors.bg,
+                            boxShadow: 'inset 0 0 0 0.5px rgba(255, 255, 255, 0.6)',
                           }}
                           onClick={() => handleClick(rect.data)}
                           onMouseEnter={() =>
