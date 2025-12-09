@@ -1,8 +1,8 @@
 "use client";
 
-import { BudgetItem } from "@/types";
-import { formatMoney, formatVariance, getArrow } from "@/lib/format";
 import SectionHeading from "@/components/SectionHeading";
+import { formatMoney, formatVariance } from "@/lib/format";
+import { BudgetItem } from "@/types";
 
 interface BudgetOverviewProps {
   grandTotal: BudgetItem;
@@ -39,25 +39,45 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
       <div className="max-w-2xl">
         {/* Three boxes in a row */}
         <div className="flex items-center gap-1 text-center">
-          <div className="flex-1 rounded-lg bg-gray-100 px-3 py-2">
-            <p className="text-xs text-gray-500">2025 Approved</p>
+          <a
+            href="https://www.un.org/en/ga/fifth/79/ppb2025.shtml"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 cursor-pointer rounded-lg border border-gray-400 bg-gray-600/10 px-3 py-2 transition-colors hover:border-gray-500 hover:bg-gray-600/20"
+          >
+            <p className="text-xs text-gray-600">2025 Approved</p>
             <p className="text-base font-semibold text-gray-900">
               {formatMoney(b["2025 approved"])}
             </p>
-          </div>
+          </a>
           <span className="text-gray-400">→</span>
-          <div className="flex-1 rounded-lg bg-gray-100 px-3 py-2">
-            <p className="text-xs text-gray-500">2026 Proposed</p>
+          <a
+            href="https://www.un.org/en/ga/fifth/80/ppb2026.shtml"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 cursor-pointer rounded-lg border border-un-blue/50 bg-un-blue/10 px-3 py-2 transition-colors hover:border-un-blue/60 hover:bg-un-blue/20"
+          >
+            <p className="text-xs text-un-blue">2026 Proposed</p>
             <p className="text-base font-semibold text-gray-900">
               {formatMoney(b["2026 proposed programme budget"])}
             </p>
-          </div>
+          </a>
           <span className="text-gray-400">→</span>
-          <div className="flex-1 rounded-lg border border-un-blue/20 bg-un-blue/10 px-3 py-2">
+          <a
+            href="https://docs.un.org/en/A/80/400"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 cursor-pointer rounded-lg border-2 border-un-blue bg-un-blue/15 px-3 py-2 transition-colors hover:bg-un-blue/25"
+          >
             <p className="text-xs text-un-blue">2026 Revised</p>
-            <p className="text-base font-bold text-un-blue">
+            <p className="text-base font-bold text-gray-900">
               {formatMoney(b["2026 revised estimate"])}
             </p>
+          </a>
+          <span className="text-gray-400">→</span>
+          <div className="flex-1 rounded-lg border-2 border-dashed border-gray-400 bg-gray-50 px-3 py-2 text-center">
+            <p className="text-xs text-gray-500">2026 Approved</p>
+            <p className="text-base font-semibold text-gray-900">$X.XXB</p>
           </div>
         </div>
 
