@@ -26,6 +26,7 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
     null,
   );
   const [loadingNarratives, setLoadingNarratives] = useState(false);
+  const [detailsError, setDetailsError] = useState<string | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -39,9 +40,21 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
     if (!entity) return;
 
     setLoadingNarratives(true);
+    setDetailsError(null);
+
     fetch(`${basePath}/details.json`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(
+            `Failed to load details: ${res.status} ${res.statusText}`,
+          );
+        }
+        return res.json();
+      })
       .then((data: DetailItem[]) => {
+        if (!Array.isArray(data)) {
+          throw new Error("Invalid data format received");
+        }
         const match = data.find(
           (d) =>
             d.entity === entity.name ||
@@ -50,13 +63,60 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
         );
         setNarratives(match?.narratives || []);
         setResourceTable(match?.resource_table || null);
+        setDetailsError(null);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error("Error loading entity details:", error);
         setNarratives([]);
         setResourceTable(null);
+        setDetailsError(
+          error instanceof Error
+            ? error.message
+            : "Failed to load details. Please try again.",
+        );
       })
       .finally(() => setLoadingNarratives(false));
   }, [entity]);
+
+  const handleRetry = () => {
+    setLoadingNarratives(true);
+    setDetailsError(null);
+
+    fetch(`${basePath}/details.json`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(
+            `Failed to load details: ${res.status} ${res.statusText}`,
+          );
+        }
+        return res.json();
+      })
+      .then((data: DetailItem[]) => {
+        if (!Array.isArray(data)) {
+          throw new Error("Invalid data format received");
+        }
+        const match = data.find(
+          (d) =>
+            d.entity === entity?.name ||
+            d.entity === entity?.budgetItem.chapter_title ||
+            d.entity === entity?.budgetItem["Entity name"],
+        );
+        setNarratives(match?.narratives || []);
+        setResourceTable(match?.resource_table || null);
+        setDetailsError(null);
+      })
+      .catch((error) => {
+        console.error("Error loading entity details:", error);
+        setNarratives([]);
+        setResourceTable(null);
+        setDetailsError(
+          error instanceof Error
+            ? error.message
+            : "Failed to load details. Please try again.",
+        );
+      })
+      .finally(() => setLoadingNarratives(false));
+  };
 
   const handleClose = useCallback(() => {
     setIsClosing(true);
@@ -497,6 +557,16 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
               <div className="space-y-2">
                 <div className="h-16 animate-pulse rounded-lg bg-gray-100" />
                 <div className="h-16 animate-pulse rounded-lg bg-gray-100" />
+              </div>
+            ) : detailsError ? (
+              <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+                <p className="mb-2 text-sm text-red-800">{detailsError}</p>
+                <button
+                  onClick={handleRetry}
+                  className="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
+                >
+                  Try Again
+                </button>
               </div>
             ) : narratives.length > 0 ? (
               <div className="space-y-2">{narratives.map(renderNarrative)}</div>
