@@ -2,7 +2,7 @@
 
 import SectionHeading from "@/components/SectionHeading";
 import { BudgetItem, TreemapEntity } from "@/types";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 
 interface LollipopRow {
   id: string;

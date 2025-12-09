@@ -18,6 +18,27 @@ const getPartNumber = (part: string): string => {
   return match ? match[1] : part;
 };
 
+// VarianceBadge component
+const VarianceBadge = ({
+  value,
+  small,
+}: {
+  value: number | null;
+  small?: boolean;
+}) => (
+  <span
+    className={`rounded font-medium whitespace-nowrap ${small ? "px-1.5 py-0.5 text-xs" : "px-2 py-1 text-xs"} ${
+      (value ?? 0) < 0
+        ? "bg-red-100 text-red-700"
+        : (value ?? 0) > 0
+          ? "bg-green-100 text-green-700"
+          : "bg-gray-100 text-gray-600"
+    }`}
+  >
+    {formatVariance(value)}
+  </span>
+);
+
 export default function EntityModal({ entity, onClose }: EntityModalProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -39,6 +60,7 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
   useEffect(() => {
     if (!entity) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoadingNarratives(true);
     setDetailsError(null);
 
@@ -193,7 +215,7 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
         style={{ marginLeft: indent }}
       >
         <div className="flex gap-3">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-un-blue text-xs font-medium text-white">
               {n.prefix}
             </span>
@@ -205,26 +227,6 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
       </div>
     );
   };
-
-  const VarianceBadge = ({
-    value,
-    small,
-  }: {
-    value: number | null;
-    small?: boolean;
-  }) => (
-    <span
-      className={`rounded font-medium whitespace-nowrap ${small ? "px-1.5 py-0.5 text-xs" : "px-2 py-1 text-xs"} ${
-        (value ?? 0) < 0
-          ? "bg-red-100 text-red-700"
-          : (value ?? 0) > 0
-            ? "bg-green-100 text-green-700"
-            : "bg-gray-100 text-gray-600"
-      }`}
-    >
-      {formatVariance(value)}
-    </span>
-  );
 
   return (
     <div
@@ -409,10 +411,6 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
                     {rows.map((row, i) => {
                       const minX = Math.min(row.approved, row.revised);
                       const maxX = Math.max(row.approved, row.revised);
-                      const variance =
-                        row.approved > 0
-                          ? ((row.revised - row.approved) / row.approved) * 100
-                          : null;
 
                       return (
                         <div
@@ -421,7 +419,7 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
                           style={{ height: ROW_H }}
                         >
                           <div
-                            className="flex-shrink-0 truncate pr-2 text-[10px] text-gray-600"
+                            className="shrink-0 truncate pr-2 text-[10px] text-gray-600"
                             style={{ width: LABEL_W }}
                             title={row.label}
                           >

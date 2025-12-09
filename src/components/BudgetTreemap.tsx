@@ -325,6 +325,7 @@ export default function BudgetTreemap({
     };
 
     updateLayout();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
 
     window.addEventListener("resize", updateLayout);
