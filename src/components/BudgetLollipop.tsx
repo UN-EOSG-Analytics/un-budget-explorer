@@ -240,24 +240,27 @@ export default function BudgetLollipop({
     setTooltip({ x: adjustedX, y, row });
   };
 
-  const handleLabelMouseEnter = (rowId: string, labelEl: HTMLSpanElement | null) => {
+  const handleLabelMouseEnter = (
+    rowId: string,
+    labelEl: HTMLSpanElement | null,
+  ) => {
     if (!labelEl) return;
-    
+
     // Check if text is truncated by comparing scroll width with client width
     const isTruncated = labelEl.scrollWidth > labelEl.clientWidth;
-    
+
     if (isTruncated) {
       const timeoutId = setTimeout(() => {
         setHoveredLabel({ id: rowId, isTruncated: true });
       }, 500); // 500ms delay
-      
+
       labelEl.dataset.timeoutId = String(timeoutId);
     }
   };
 
   const handleLabelMouseLeave = (labelEl: HTMLSpanElement | null) => {
     if (!labelEl) return;
-    
+
     if (labelEl.dataset.timeoutId) {
       clearTimeout(Number(labelEl.dataset.timeoutId));
       delete labelEl.dataset.timeoutId;
@@ -626,20 +629,22 @@ export default function BudgetLollipop({
                   <span className="mr-1 shrink-0">{row.numeral}.</span>
                 )}
                 <span className="relative min-w-0 flex-1">
-                  <span 
+                  <span
                     ref={(el) => {
                       if (el) labelRefs.current.set(row.id, el);
                     }}
                     className="block truncate"
-                    onMouseEnter={(e) => handleLabelMouseEnter(row.id, e.currentTarget)}
+                    onMouseEnter={(e) =>
+                      handleLabelMouseEnter(row.id, e.currentTarget)
+                    }
                     onMouseLeave={(e) => handleLabelMouseLeave(e.currentTarget)}
                   >
                     {row.label}
                   </span>
-                  
+
                   {/* Tooltip for truncated text */}
                   {hoveredLabel?.id === row.id && hoveredLabel.isTruncated && (
-                    <span className="pointer-events-none absolute left-0 top-full z-50 mt-1 max-w-md whitespace-normal rounded-md border border-gray-200 bg-white px-3 py-2 text-xs font-normal text-gray-900 shadow-lg">
+                    <span className="pointer-events-none absolute top-full left-0 z-50 mt-1 max-w-md rounded-md border border-gray-200 bg-white px-3 py-2 text-xs font-normal whitespace-normal text-gray-900 shadow-lg">
                       {row.label}
                     </span>
                   )}

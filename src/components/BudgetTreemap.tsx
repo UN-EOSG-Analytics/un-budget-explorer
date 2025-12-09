@@ -288,11 +288,11 @@ export default function BudgetTreemap({
     for (let i = 1; i < positions.length; i++) {
       const previous = positions[i - 1];
       const current = positions[i];
-      
+
       const previousHeight = getLabelHeight(previous.part);
       if (previousHeight > 0) {
         const previousBottom = previous.y + previousHeight;
-        
+
         // Only push down by the minimum amount needed
         if (current.y < previousBottom) {
           current.y = previousBottom + 0.05; // Tiny gap
@@ -400,22 +400,44 @@ export default function BudgetTreemap({
       {/* Mobile expand button and legend - always at top on small screens */}
       <div className="block space-y-2 rounded bg-gray-50 px-2 py-3 sm:hidden">
         <div className="flex items-center justify-between">
-          <div className="text-xs font-medium text-gray-700">Budget Sections</div>
+          <div className="text-xs font-medium text-gray-700">
+            Budget Sections
+          </div>
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="flex items-center gap-1.5 rounded-md bg-un-blue px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-un-blue/90"
           >
             {isExpanded ? (
               <>
-                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
+                <svg
+                  className="h-3.5 w-3.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"
+                  />
                 </svg>
                 Collapse
               </>
             ) : (
               <>
-                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                <svg
+                  className="h-3.5 w-3.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"
+                  />
                 </svg>
                 Expand
               </>
@@ -491,9 +513,10 @@ export default function BudgetTreemap({
                   100,
                   isMobile,
                 );
-                
+
                 // Check if this part has multiple sections OR this section has multiple entities
-                const needsDividers = sectionRects.length > 1 || entityRects.length > 1;
+                const needsDividers =
+                  sectionRects.length > 1 || entityRects.length > 1;
 
                 return (
                   <div
@@ -508,15 +531,17 @@ export default function BudgetTreemap({
                   >
                     {entityRects.map((rect, i) => {
                       const isHovered = hoveredEntity === rect.data.id;
-                      
+
                       // Calculate actual pixel height
-                      const sectionPixelHeight = (sectionRect.height / 100) * treemapHeight;
-                      const entityPixelHeight = (rect.height / 100) * sectionPixelHeight;
-                      
+                      const sectionPixelHeight =
+                        (sectionRect.height / 100) * treemapHeight;
+                      const entityPixelHeight =
+                        (rect.height / 100) * sectionPixelHeight;
+
                       // Show budget only when box has enough vertical space for two lines comfortably
                       // UNON=161px, UNOV=215px - set threshold to hide both if too cramped
                       const canShowBudget = entityPixelHeight > 250;
-                      
+
                       const displayText =
                         rect.data.abbreviation || rect.data.name;
 
@@ -532,7 +557,9 @@ export default function BudgetTreemap({
                             backgroundColor: isHovered
                               ? colors.hover
                               : colors.bg,
-                            boxShadow: needsDividers ? 'inset 0 0 0 0.5px rgba(255, 255, 255, 0.6)' : 'none',
+                            boxShadow: needsDividers
+                              ? "inset 0 0 0 0.5px rgba(255, 255, 255, 0.6)"
+                              : "none",
                           }}
                           onClick={() => handleClick(rect.data)}
                           onMouseEnter={() =>
@@ -543,12 +570,12 @@ export default function BudgetTreemap({
                           }
                           onMouseLeave={handleMouseLeave}
                         >
-                          <div className="flex h-full w-full flex-col items-start justify-start overflow-hidden px-0.5 pt-0 gap-0">
+                          <div className="flex h-full w-full flex-col items-start justify-start gap-0 overflow-hidden px-0.5 pt-0">
                             <div className="w-full truncate text-left text-xs leading-tight font-semibold text-white sm:text-sm">
                               {displayText}
                             </div>
                             {canShowBudget && (
-                              <div className="w-full truncate text-left text-[10px] leading-tight text-white/95 sm:text-xs -mt-0.5">
+                              <div className="-mt-0.5 w-full truncate text-left text-[10px] leading-tight text-white/95 sm:text-xs">
                                 {formatBudget(rect.data.budget)}{" "}
                                 {formatVariance(
                                   rect.data.budgetItem[
@@ -575,8 +602,9 @@ export default function BudgetTreemap({
         style={{ height: `${treemapHeight}px` }}
       >
         {labelPositions.map((labelPos) => {
-          const part = partHeights.find((p) => p.part.part === labelPos.part)!
-            .part;
+          const part = partHeights.find(
+            (p) => p.part.part === labelPos.part,
+          )!.part;
           const colors = PART_COLORS[part.part] || PART_COLORS["Part I"];
           const isCompact = [
             "Part IX",
@@ -592,7 +620,7 @@ export default function BudgetTreemap({
           return isCompact ? (
             <div
               key={`label-${part.part}`}
-              className="absolute left-0 flex text-xs leading-none whitespace-nowrap -translate-y-px"
+              className="absolute left-0 flex -translate-y-px text-xs leading-none whitespace-nowrap"
               style={{ top: `${labelPos.y}%`, color: colors.bg }}
             >
               <span className="w-6 font-medium">{numeral}.</span>
@@ -605,7 +633,7 @@ export default function BudgetTreemap({
           ) : (
             <div
               key={`label-${part.part}`}
-              className="absolute left-0 flex text-xs leading-none -translate-y-px"
+              className="absolute left-0 flex -translate-y-px text-xs leading-none"
               style={{ top: `${labelPos.y}%`, color: colors.bg }}
             >
               <span className="w-6 font-medium">{numeral}.</span>

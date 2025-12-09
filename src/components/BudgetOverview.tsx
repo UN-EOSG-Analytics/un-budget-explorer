@@ -37,22 +37,34 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
       />
 
       {/* Mobile: Vertical Stack */}
-      <div className="md:hidden space-y-1.5 max-w-sm">
+      <div className="max-w-sm space-y-1.5 md:hidden">
         <a
           href="https://www.un.org/en/ga/fifth/79/ppb2025.shtml"
           target="_blank"
           rel="noopener noreferrer"
           className="block cursor-pointer rounded-lg border border-gray-400 bg-gray-600/10 px-3 py-2 text-center transition-colors hover:border-gray-500 hover:bg-gray-600/20"
         >
-          <p className="text-xs text-gray-600 mb-0.5">2025 Approved</p>
+          <p className="mb-0.5 text-xs text-gray-600">2025 Approved</p>
           <p className="text-base font-semibold text-gray-900">
             {formatMoney(b["2025 approved"])}
           </p>
         </a>
 
         <div className="flex justify-center">
-          <svg width="16" height="16" viewBox="0 0 16 16" className="text-gray-400">
-            <path d="M8 2 L8 12 M5 9 L8 12 L11 9" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            className="text-gray-400"
+          >
+            <path
+              d="M8 2 L8 12 M5 9 L8 12 L11 9"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </div>
 
@@ -62,15 +74,27 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
           rel="noopener noreferrer"
           className="block cursor-pointer rounded-lg border border-un-blue/50 bg-un-blue/10 px-3 py-2 text-center transition-colors hover:border-un-blue/60 hover:bg-un-blue/20"
         >
-          <p className="text-xs text-un-blue mb-0.5">2026 Proposed</p>
+          <p className="mb-0.5 text-xs text-un-blue">2026 Proposed</p>
           <p className="text-base font-semibold text-gray-900">
             {formatMoney(b["2026 proposed programme budget"])}
           </p>
         </a>
 
         <div className="flex justify-center">
-          <svg width="16" height="16" viewBox="0 0 16 16" className="text-gray-400">
-            <path d="M8 2 L8 12 M5 9 L8 12 L11 9" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            className="text-gray-400"
+          >
+            <path
+              d="M8 2 L8 12 M5 9 L8 12 L11 9"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </div>
 
@@ -80,25 +104,37 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
           rel="noopener noreferrer"
           className="block cursor-pointer rounded-lg border-2 border-un-blue bg-un-blue/15 px-3 py-2 text-center transition-colors hover:bg-un-blue/25"
         >
-          <p className="text-xs text-un-blue mb-0.5">2026 Revised</p>
+          <p className="mb-0.5 text-xs text-un-blue">2026 Revised</p>
           <p className="text-base font-bold text-gray-900">
             {formatMoney(b["2026 revised estimate"])}
           </p>
         </a>
 
-        <div className="flex justify-center items-center gap-1.5 py-1.5 text-xs">
+        <div className="flex items-center justify-center gap-1.5 py-1.5 text-xs">
           <span className="text-gray-500">vs. 2025:</span>
           <VarianceBadge value={varianceVs2025} />
         </div>
 
         <div className="flex justify-center">
-          <svg width="16" height="16" viewBox="0 0 16 16" className="text-gray-400">
-            <path d="M8 2 L8 12 M5 9 L8 12 L11 9" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            className="text-gray-400"
+          >
+            <path
+              d="M8 2 L8 12 M5 9 L8 12 L11 9"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </div>
 
         <div className="rounded-lg border-2 border-dashed border-gray-400 bg-gray-50 px-3 py-2 text-center">
-          <p className="text-xs text-gray-500 mb-0.5">2026 Approved</p>
+          <p className="mb-0.5 text-xs text-gray-500">2026 Approved</p>
           <p className="text-base font-semibold text-gray-400">TBD</p>
         </div>
       </div>
@@ -178,7 +214,10 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
             />
             <circle cx="16.67%" cy="50%" r="3" fill="#9ca3af" />
           </svg>
-          <div className="pointer-events-none absolute inset-0 flex items-center" style={{ paddingLeft: "16.67%", paddingRight: "37.5%" }}>
+          <div
+            className="pointer-events-none absolute inset-0 flex items-center"
+            style={{ paddingLeft: "16.67%", paddingRight: "37.5%" }}
+          >
             <div className="flex w-full justify-center">
               <VarianceBadge value={varianceVs2025} />
             </div>
