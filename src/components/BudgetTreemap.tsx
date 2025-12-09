@@ -250,6 +250,58 @@ export default function BudgetTreemap({
     [parts],
   );
 
+  // Calculate part heights with gaps
+  const partHeights = useMemo(() => {
+    const partGapPercent = (PART_GAP / treemapHeight) * 100;
+    const heights: { part: TreemapPart; startY: number; height: number }[] = [];
+    let currentY = 0;
+    parts.forEach((part, i) => {
+      const partHeight = (part.totalBudget / totalBudget) * 100;
+      heights.push({ part, startY: currentY, height: partHeight });
+      currentY += partHeight + (i < parts.length - 1 ? partGapPercent : 0);
+    });
+    return heights;
+  }, [parts, totalBudget, treemapHeight]);
+
+  // Calculate label positions - keep aligned with boxes, minimal repulsion only if overlapping
+  const labelPositions = useMemo(() => {
+    const positions = partHeights.map(({ part, startY }) => ({
+      part: part.part,
+      y: startY,
+    }));
+
+    // Get approximate label heights for overlap detection (compact single-line only)
+    const getLabelHeight = (partKey: string) => {
+      const isCompact = [
+        "Part IX",
+        "Part X",
+        "Part XI",
+        "Part XII",
+        "Part XIII",
+        "Part XIV",
+      ].includes(partKey);
+      return isCompact ? 1.2 : 0; // Only check compact labels
+    };
+
+    // Minimal downward adjustment only if compact labels actually overlap
+    for (let i = 1; i < positions.length; i++) {
+      const previous = positions[i - 1];
+      const current = positions[i];
+      
+      const previousHeight = getLabelHeight(previous.part);
+      if (previousHeight > 0) {
+        const previousBottom = previous.y + previousHeight;
+        
+        // Only push down by the minimum amount needed
+        if (current.y < previousBottom) {
+          current.y = previousBottom + 0.05; // Tiny gap
+        }
+      }
+    }
+
+    return positions;
+  }, [partHeights]);
+
   // Single effect to handle all client-side initialization
   useEffect(() => {
     const updateLayout = () => {
@@ -346,17 +398,6 @@ export default function BudgetTreemap({
       </div>
     );
   }
-
-  // Calculate part heights with gaps
-  const partGapPercent = (PART_GAP / treemapHeight) * 100;
-  const partHeights: { part: TreemapPart; startY: number; height: number }[] =
-    [];
-  let currentY = 0;
-  parts.forEach((part, i) => {
-    const partHeight = (part.totalBudget / totalBudget) * 100;
-    partHeights.push({ part, startY: currentY, height: partHeight });
-    currentY += partHeight + (i < parts.length - 1 ? partGapPercent : 0);
-  });
 
   // Responsive thresholds for label display - optimized for readability
   const getThresholds = () => {
@@ -517,7 +558,9 @@ export default function BudgetTreemap({
         className="relative hidden w-60 shrink-0 lg:block"
         style={{ height: `${treemapHeight}px` }}
       >
-        {partHeights.map(({ part, startY }) => {
+        {labelPositions.map((labelPos) => {
+          const part = partHeights.find((p) => p.part.part === labelPos.part)!
+            .part;
           const colors = PART_COLORS[part.part] || PART_COLORS["Part I"];
           const isCompact = [
             "Part IX",
@@ -533,8 +576,8 @@ export default function BudgetTreemap({
           return isCompact ? (
             <div
               key={`label-${part.part}`}
-              className="absolute left-0 flex text-xs whitespace-nowrap"
-              style={{ top: `${startY}%`, color: colors.bg }}
+              className="absolute left-0 flex text-xs leading-none whitespace-nowrap -translate-y-px"
+              style={{ top: `${labelPos.y}%`, color: colors.bg }}
             >
               <span className="w-6 font-medium">{numeral}.</span>
               <span className="font-medium">{name}</span>
@@ -546,11 +589,11 @@ export default function BudgetTreemap({
           ) : (
             <div
               key={`label-${part.part}`}
-              className="absolute left-0 flex text-xs leading-tight"
-              style={{ top: `${startY}%`, color: colors.bg }}
+              className="absolute left-0 flex text-xs leading-none -translate-y-px"
+              style={{ top: `${labelPos.y}%`, color: colors.bg }}
             >
               <span className="w-6 font-medium">{numeral}.</span>
-              <div>
+              <div className="leading-tight">
                 <div className="font-medium">{name}</div>
                 <div className="mt-0.5">
                   {formatBudget(part.totalBudget)}{" "}
