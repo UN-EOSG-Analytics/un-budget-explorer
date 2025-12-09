@@ -2,7 +2,7 @@
 
 import SectionHeading from "@/components/SectionHeading";
 import { BudgetItem, TreemapEntity } from "@/types";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface LollipopRow {
   id: string;
@@ -80,6 +80,11 @@ export default function BudgetLollipop({
     y: number;
     row: LollipopRow;
   } | null>(null);
+  const [hoveredLabel, setHoveredLabel] = useState<{
+    id: string;
+    isTruncated: boolean;
+  } | null>(null);
+  const labelRefs = useRef<Map<string, HTMLSpanElement>>(new Map());
 
   // Build maps
   const partTotals = new Map<string, BudgetItem>();
@@ -233,6 +238,31 @@ export default function BudgetLollipop({
     const adjustedX =
       x + tooltipWidth + 24 > viewportWidth ? x - tooltipWidth - 12 : x + 12;
     setTooltip({ x: adjustedX, y, row });
+  };
+
+  const handleLabelMouseEnter = (rowId: string, labelEl: HTMLSpanElement | null) => {
+    if (!labelEl) return;
+    
+    // Check if text is truncated by comparing scroll width with client width
+    const isTruncated = labelEl.scrollWidth > labelEl.clientWidth;
+    
+    if (isTruncated) {
+      const timeoutId = setTimeout(() => {
+        setHoveredLabel({ id: rowId, isTruncated: true });
+      }, 500); // 500ms delay
+      
+      labelEl.dataset.timeoutId = String(timeoutId);
+    }
+  };
+
+  const handleLabelMouseLeave = (labelEl: HTMLSpanElement | null) => {
+    if (!labelEl) return;
+    
+    if (labelEl.dataset.timeoutId) {
+      clearTimeout(Number(labelEl.dataset.timeoutId));
+      delete labelEl.dataset.timeoutId;
+    }
+    setHoveredLabel(null);
   };
 
   const ROW_HEIGHT = 28;
@@ -579,7 +609,7 @@ export default function BudgetLollipop({
             >
               {/* Label */}
               <div
-                className={`flex shrink-0 items-center pr-2 text-xs ${isClickable ? "hover:text-un-blue" : ""} ${row.level === 0 ? "font-medium" : ""} ${row.level === 2 ? "text-gray-500" : ""}`}
+                className={`group flex shrink-0 items-center pr-2 text-xs ${isClickable ? "hover:text-un-blue" : ""} ${row.level === 0 ? "font-medium" : ""} ${row.level === 2 ? "text-gray-500" : ""}`}
                 style={{
                   width: LABEL_WIDTH,
                   paddingLeft: row.level === 2 ? 30 : row.level * 16,
@@ -595,7 +625,25 @@ export default function BudgetLollipop({
                 {row.numeral && (
                   <span className="mr-1 shrink-0">{row.numeral}.</span>
                 )}
-                <span className="truncate">{row.label}</span>
+                <span className="relative min-w-0 flex-1">
+                  <span 
+                    ref={(el) => {
+                      if (el) labelRefs.current.set(row.id, el);
+                    }}
+                    className="block truncate"
+                    onMouseEnter={(e) => handleLabelMouseEnter(row.id, e.currentTarget)}
+                    onMouseLeave={(e) => handleLabelMouseLeave(e.currentTarget)}
+                  >
+                    {row.label}
+                  </span>
+                  
+                  {/* Tooltip for truncated text */}
+                  {hoveredLabel?.id === row.id && hoveredLabel.isTruncated && (
+                    <span className="pointer-events-none absolute left-0 top-full z-50 mt-1 max-w-md whitespace-normal rounded-md border border-gray-200 bg-white px-3 py-2 text-xs font-normal text-gray-900 shadow-lg">
+                      {row.label}
+                    </span>
+                  )}
+                </span>
               </div>
 
               {/* Chart area */}
