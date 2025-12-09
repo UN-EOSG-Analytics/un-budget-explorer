@@ -450,6 +450,9 @@ export default function BudgetTreemap({
             100,
             isMobile,
           );
+          
+          // Debug: log all section widths for parts with single vs multiple sections
+          console.log(`${part.part}: ${sections.length} sections`, sectionRects.map(s => `${s.data.section}: x=${s.x.toFixed(1)}, w=${s.width.toFixed(1)}, end=${(s.x + s.width).toFixed(1)}`));
 
           return (
             <div
@@ -473,6 +476,9 @@ export default function BudgetTreemap({
                   100,
                   isMobile,
                 );
+                
+                // Check if this part has multiple sections OR this section has multiple entities
+                const needsDividers = sectionRects.length > 1 || entityRects.length > 1;
 
                 return (
                   <div
@@ -511,7 +517,7 @@ export default function BudgetTreemap({
                             backgroundColor: isHovered
                               ? colors.hover
                               : colors.bg,
-                            boxShadow: 'inset 0 0 0 0.5px rgba(255, 255, 255, 0.6)',
+                            boxShadow: needsDividers ? 'inset 0 0 0 0.5px rgba(255, 255, 255, 0.6)' : 'none',
                           }}
                           onClick={() => handleClick(rect.data)}
                           onMouseEnter={() =>
