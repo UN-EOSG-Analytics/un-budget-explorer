@@ -244,6 +244,7 @@ export default function BudgetTreemap({
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [treemapHeight, setTreemapHeight] = useState(1200);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const totalBudget = useMemo(
     () => parts.reduce((sum, p) => sum + p.totalBudget, 0),
@@ -312,7 +313,8 @@ export default function BudgetTreemap({
       let height;
       if (width < 640) {
         // Mobile: shorter height creates wider boxes for better label readability
-        height = 2000;
+        // When expanded, significantly increase height for better clickability
+        height = isExpanded ? 6000 : 2000;
       } else if (width < 1024) {
         height = 1600;
       } else {
@@ -323,6 +325,7 @@ export default function BudgetTreemap({
         width,
         mobile,
         height,
+        expanded: isExpanded,
         parts: parts.length,
       });
       setTreemapHeight(height);
@@ -333,7 +336,7 @@ export default function BudgetTreemap({
 
     window.addEventListener("resize", updateLayout);
     return () => window.removeEventListener("resize", updateLayout);
-  }, [parts.length]);
+  }, [parts.length, isExpanded]);
 
   const formatBudget = (amount: number): string => {
     if (amount >= 1_000_000) {
@@ -401,9 +404,31 @@ export default function BudgetTreemap({
 
   return (
     <div className="flex flex-col gap-2 lg:flex-row">
-      {/* Mobile legend - always at top on small screens */}
+      {/* Mobile expand button and legend - always at top on small screens */}
       <div className="block space-y-2 rounded bg-gray-50 px-2 py-3 sm:hidden">
-        <div className="text-xs font-medium text-gray-700">Budget Sections</div>
+        <div className="flex items-center justify-between">
+          <div className="text-xs font-medium text-gray-700">Budget Sections</div>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="flex items-center gap-1.5 rounded-md bg-un-blue px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-un-blue/90"
+          >
+            {isExpanded ? (
+              <>
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
+                </svg>
+                Collapse
+              </>
+            ) : (
+              <>
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                </svg>
+                Expand
+              </>
+            )}
+          </button>
+        </div>
         <div className="flex flex-wrap gap-x-3 gap-y-1.5">
           {partHeights.map(({ part }) => {
             const colors = PART_COLORS[part.part] || PART_COLORS["Part I"];
