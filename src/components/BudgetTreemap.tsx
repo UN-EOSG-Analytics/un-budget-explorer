@@ -399,18 +399,6 @@ export default function BudgetTreemap({
     );
   }
 
-  // Responsive thresholds for label display - optimized for readability
-  const getThresholds = () => {
-    if (typeof window === "undefined") return { showBudget: 12 };
-    const width = window.innerWidth;
-    // Only show budget info when box has sufficient space - requires both width AND height
-    if (width < 640) return { showBudget: 8 }; // Mobile: need decent space
-    if (width < 1024) return { showBudget: 10 }; // Tablet
-    return { showBudget: 12 }; // Desktop: comfortable reading space
-  };
-
-  const thresholds = getThresholds();
-
   return (
     <div className="flex flex-col gap-2 lg:flex-row">
       {/* Mobile legend - always at top on small screens */}
@@ -499,9 +487,15 @@ export default function BudgetTreemap({
                   >
                     {entityRects.map((rect, i) => {
                       const isHovered = hoveredEntity === rect.data.id;
-                      const canShowBudget =
-                        rect.width > thresholds.showBudget &&
-                        rect.height > thresholds.showBudget;
+                      
+                      // Calculate actual pixel height
+                      const sectionPixelHeight = (sectionRect.height / 100) * treemapHeight;
+                      const entityPixelHeight = (rect.height / 100) * sectionPixelHeight;
+                      
+                      // Show budget only when box has enough vertical space for two lines comfortably
+                      // UNON=161px, UNOV=215px - set threshold to hide both if too cramped
+                      const canShowBudget = entityPixelHeight > 250;
+                      
                       const displayText =
                         rect.data.abbreviation || rect.data.name;
 
@@ -528,12 +522,12 @@ export default function BudgetTreemap({
                           }
                           onMouseLeave={handleMouseLeave}
                         >
-                          <div className="flex h-full w-full flex-col items-start justify-start overflow-hidden px-0.5 py-0 sm:px-1 sm:py-0.5">
+                          <div className="flex h-full w-full flex-col items-start justify-start overflow-hidden px-0.5 pt-0 gap-0">
                             <div className="w-full truncate text-left text-xs leading-tight font-semibold text-white sm:text-sm">
                               {displayText}
                             </div>
                             {canShowBudget && (
-                              <div className="w-full truncate text-left text-[10px] leading-tight text-white/95 sm:text-xs">
+                              <div className="w-full truncate text-left text-[10px] leading-tight text-white/95 sm:text-xs -mt-0.5">
                                 {formatBudget(rect.data.budget)}{" "}
                                 {formatVariance(
                                   rect.data.budgetItem[
