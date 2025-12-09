@@ -145,7 +145,7 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
           <span className="text-gray-400">→</span>
           <div className="flex-1 rounded-lg border-2 border-dashed border-gray-400 bg-gray-50 px-3 py-2 text-center">
             <p className="text-xs text-gray-500">2026 Approved</p>
-            <p className="text-base font-semibold text-gray-900">$X.XXB</p>
+            <p className="text-base font-semibold text-gray-400">TBD</p>
           </div>
         </div>
 

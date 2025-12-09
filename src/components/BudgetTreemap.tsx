@@ -321,13 +321,6 @@ export default function BudgetTreemap({
         height = 1200;
       }
 
-      console.log("🔍 Treemap layout update:", {
-        width,
-        mobile,
-        height,
-        expanded: isExpanded,
-        parts: parts.length,
-      });
       setTreemapHeight(height);
     };
 
@@ -475,9 +468,6 @@ export default function BudgetTreemap({
             100,
             isMobile,
           );
-          
-          // Debug: log all section widths for parts with single vs multiple sections
-          console.log(`${part.part}: ${sections.length} sections`, sectionRects.map(s => `${s.data.section}: x=${s.x.toFixed(1)}, w=${s.width.toFixed(1)}, end=${(s.x + s.width).toFixed(1)}`));
 
           return (
             <div
