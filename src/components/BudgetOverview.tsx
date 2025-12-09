@@ -102,7 +102,7 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
             <line
               x1="16.67%"
               y1="50%"
-              x2="83.33%"
+              x2="62.5%"
               y2="50%"
               stroke="#d1d5db"
               strokeWidth="1"
@@ -110,8 +110,10 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
             />
             <circle cx="16.67%" cy="50%" r="3" fill="#9ca3af" />
           </svg>
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <VarianceBadge value={varianceVs2025} />
+          <div className="pointer-events-none absolute inset-0 flex items-center" style={{ paddingLeft: "16.67%", paddingRight: "37.5%" }}>
+            <div className="flex w-full justify-center">
+              <VarianceBadge value={varianceVs2025} />
+            </div>
           </div>
         </div>
       </div>

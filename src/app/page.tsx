@@ -6,10 +6,10 @@ import BudgetTreemap from "@/components/BudgetTreemap";
 import EntityModal from "@/components/EntityModal";
 import SectionHeading from "@/components/SectionHeading";
 import {
-  BudgetItem,
-  TreemapEntity,
-  TreemapPart,
-  TreemapSection,
+    BudgetItem,
+    TreemapEntity,
+    TreemapPart,
+    TreemapSection,
 } from "@/types";
 import { useEffect, useMemo, useState } from "react";
 
