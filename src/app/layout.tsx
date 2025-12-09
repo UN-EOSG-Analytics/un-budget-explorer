@@ -38,7 +38,7 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col">
         {children}
         <Footer />
-        <GoogleAnalytics gaId="G-XYZ" />
+        <GoogleAnalytics gaId="G-YHHDHFZ89H" />
       </body>
     </html>
   );
