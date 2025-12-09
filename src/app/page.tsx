@@ -250,7 +250,7 @@ export default function Home() {
 
         {/* Lollipop Chart Section */}
         {!loading && budgetData.length > 0 && (
-          <section className="mb-16 hidden sm:block">
+          <section className="mb-16">
             <BudgetLollipop
               budgetData={budgetData}
               onEntityClick={setSelectedEntity}

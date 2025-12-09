@@ -76,10 +76,7 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
                 refY="5"
                 orient="auto"
               >
-                <polygon
-                  points="0,0 10,5 0,10"
-                  fill="#9ca3af"
-                />
+                <polygon points="0,0 10,5 0,10" fill="#9ca3af" />
               </marker>
             </defs>
             <line

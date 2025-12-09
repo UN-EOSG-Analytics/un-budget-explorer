@@ -225,42 +225,342 @@ export default function BudgetLollipop({
   };
 
   const handleMouseMove = (e: React.MouseEvent, row: LollipopRow) => {
-    setTooltip({ x: e.clientX, y: e.clientY, row });
+    const x = e.clientX;
+    const y = e.clientY;
+    // Position tooltip to avoid overflow on small screens
+    const viewportWidth = window.innerWidth;
+    const tooltipWidth = 288; // w-72 = 288px
+    const adjustedX =
+      x + tooltipWidth + 24 > viewportWidth ? x - tooltipWidth - 12 : x + 12;
+    setTooltip({ x: adjustedX, y, row });
   };
 
   const ROW_HEIGHT = 28;
-  const LABEL_WIDTH = 400;
+  const LABEL_WIDTH = 500;
+
+  // Render a single lollipop chart for a row (mobile version)
+  const renderMobileLollipop = (row: LollipopRow) => {
+    const minX = Math.min(row.approved2025, row.revised2026);
+    const maxX = Math.max(row.approved2025, row.revised2026);
+    const variance =
+      row.approved2025 > 0
+        ? ((row.revised2026 - row.approved2025) / row.approved2025) * 100
+        : null;
+
+    return (
+      <div className="relative h-10 w-full">
+        {/* Tick lines */}
+        {ticks.map((tick) => (
+          <div
+            key={tick}
+            className="absolute top-0 bottom-0 w-px bg-gray-100"
+            style={{ left: `${scale(tick)}%` }}
+          />
+        ))}
+
+        {/* Connecting line */}
+        <div
+          className="absolute top-1/2 h-0.5 bg-gray-300"
+          style={{
+            left: `${scale(minX)}%`,
+            width: `${scale(maxX) - scale(minX)}%`,
+            transform: "translateY(-50%)",
+          }}
+        />
+
+        {/* Arrow */}
+        {variance !== null && variance !== 0 && (
+          <div
+            className="absolute top-1/2"
+            style={{
+              left: `${(scale(row.approved2025) + scale(row.revised2026)) / 2}%`,
+              transform:
+                variance < 0
+                  ? "translate(-50%, -50%)"
+                  : "translate(-50%, -50%) rotate(180deg)",
+            }}
+          >
+            <svg
+              width="10"
+              height="10"
+              viewBox="0 0 10 10"
+              className="text-gray-300"
+            >
+              <path d="M 0 5 L 9 1 L 9 9 Z" fill="currentColor" />
+            </svg>
+          </div>
+        )}
+
+        {/* 2026 proposed (small dot) */}
+        <div
+          className="absolute top-1/2 h-2 w-2 rounded-full border border-white bg-un-blue/50"
+          style={{
+            left: `${scale(row.proposed2026)}%`,
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+
+        {/* 2025 approved (large dot) */}
+        <div
+          className="absolute top-1/2 h-4 w-4 rounded-full border-2 border-white bg-gray-600 shadow"
+          style={{
+            left: `${scale(row.approved2025)}%`,
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+
+        {/* 2026 revised (large dot, UN blue) */}
+        <div
+          className="absolute top-1/2 h-4 w-4 rounded-full border-2 border-white bg-un-blue shadow"
+          style={{
+            left: `${scale(row.revised2026)}%`,
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+      </div>
+    );
+  };
+
+  // Mobile vertical layout
+  const renderMobileLayout = () => {
+    const partRows = rows.filter((r) => r.level === 0);
+
+    return (
+      <div className="space-y-3">
+        {/* Legend */}
+        <div className="flex flex-wrap items-center gap-3 border-b pb-3 text-xs text-gray-600">
+          <div className="flex items-center gap-2">
+            <div className="h-3 w-3 shrink-0 rounded-full border-2 border-white bg-gray-600 shadow" />
+            <span className="whitespace-nowrap">2025 Approved</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 shrink-0 rounded-full bg-un-blue/50" />
+            <span className="whitespace-nowrap">2026 Proposed</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="h-3 w-3 shrink-0 rounded-full border-2 border-white bg-un-blue shadow" />
+            <span className="whitespace-nowrap">2026 Revised</span>
+          </div>
+        </div>
+
+        {/* Part sections */}
+        {partRows.map((row) => {
+          const isExpanded = expanded.has(row.id);
+          const variance =
+            row.approved2025 > 0
+              ? ((row.revised2026 - row.approved2025) / row.approved2025) * 100
+              : null;
+
+          return (
+            <div key={row.id} className="border-b pb-3">
+              {/* Part header with expand button */}
+              <button
+                onClick={() => handleRowClick(row)}
+                className="w-full text-left"
+              >
+                <div className="mb-1 flex items-start justify-between gap-2">
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 w-4 shrink-0 text-gray-400">
+                      {row.hasChildren && (isExpanded ? "▼" : "▶")}
+                    </span>
+                    <div>
+                      <h3 className="text-lg font-semibold">
+                        {row.numeral}. {row.label}
+                      </h3>
+                      <div className="mt-1 flex flex-wrap gap-3 text-xs text-gray-600">
+                        <span>2025: {formatMoney(row.approved2025)}</span>
+                        <span>→</span>
+                        <span className="font-medium text-un-blue">
+                          2026: {formatMoney(row.revised2026)}
+                        </span>
+                        {variance !== null && (
+                          <span className="font-medium">
+                            {formatPercent(variance)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </button>
+
+              {/* Lollipop chart for this part */}
+              {renderMobileLollipop(row)}
+
+              {/* Expanded sections */}
+              {isExpanded && (
+                <div className="mt-3 space-y-3 pl-6">
+                  {rows
+                    .filter((r) => r.level === 1 && r.partKey === row.partKey)
+                    .map((sectionRow) => {
+                      const sectionExpanded = expanded.has(sectionRow.id);
+                      const sectionVariance =
+                        sectionRow.approved2025 > 0
+                          ? ((sectionRow.revised2026 -
+                              sectionRow.approved2025) /
+                              sectionRow.approved2025) *
+                            100
+                          : null;
+
+                      return (
+                        <div
+                          key={sectionRow.id}
+                          className="rounded-r border-l-2 border-gray-300 bg-gray-50/50 py-2 pl-4"
+                        >
+                          <button
+                            onClick={() => handleRowClick(sectionRow)}
+                            className="w-full text-left"
+                          >
+                            <div className="mb-1 flex items-start gap-2">
+                              <span className="mt-0.5 w-4 shrink-0 text-sm text-gray-400">
+                                {sectionRow.hasChildren &&
+                                  (sectionExpanded ? "▼" : "▶")}
+                              </span>
+                              <div>
+                                <h4 className="text-sm font-medium text-gray-900">
+                                  {sectionRow.numeral}. {sectionRow.label}
+                                </h4>
+                                <div className="mt-0.5 flex flex-wrap gap-2 text-xs text-gray-600">
+                                  <span>
+                                    {formatMoney(sectionRow.approved2025)}
+                                  </span>
+                                  <span>→</span>
+                                  <span className="font-medium text-un-blue">
+                                    {formatMoney(sectionRow.revised2026)}
+                                  </span>
+                                  {sectionVariance !== null && (
+                                    <span className="font-medium">
+                                      {formatPercent(sectionVariance)}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+
+                          {/* Lollipop for section */}
+                          {renderMobileLollipop(sectionRow)}
+
+                          {/* Expanded entities */}
+                          {sectionExpanded && (
+                            <div className="mt-2 space-y-2 pl-4">
+                              {rows
+                                .filter(
+                                  (r) =>
+                                    r.level === 2 &&
+                                    r.partKey === row.partKey &&
+                                    r.sectionKey === sectionRow.sectionKey,
+                                )
+                                .map((entityRow) => {
+                                  const entityVariance =
+                                    entityRow.approved2025 > 0
+                                      ? ((entityRow.revised2026 -
+                                          entityRow.approved2025) /
+                                          entityRow.approved2025) *
+                                        100
+                                      : null;
+
+                                  return (
+                                    <div
+                                      key={entityRow.id}
+                                      className="border-l border-gray-300 py-1 pl-3"
+                                    >
+                                      <button
+                                        onClick={() =>
+                                          handleRowClick(entityRow)
+                                        }
+                                        className="w-full text-left"
+                                      >
+                                        <div className="mb-1">
+                                          <h5 className="text-sm font-normal text-gray-600">
+                                            {entityRow.label}
+                                          </h5>
+                                          <div className="mt-0.5 flex flex-wrap gap-2 text-xs text-gray-600">
+                                            <span>
+                                              {formatMoney(
+                                                entityRow.approved2025,
+                                              )}
+                                            </span>
+                                            <span>→</span>
+                                            <span className="font-medium text-un-blue">
+                                              {formatMoney(
+                                                entityRow.revised2026,
+                                              )}
+                                            </span>
+                                            {entityVariance !== null && (
+                                              <span className="font-medium">
+                                                {formatPercent(entityVariance)}
+                                              </span>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </button>
+                                      {renderMobileLollipop(entityRow)}
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+        {/* X-axis labels */}
+        <div className="relative h-4 text-xs text-gray-500">
+          {ticks.map((tick, idx) => (
+            <span
+              key={tick}
+              className={`absolute -translate-x-1/2 transform whitespace-nowrap ${
+                idx % 2 === 1 ? "hidden" : ""
+              }`}
+              style={{ left: `${scale(tick)}%` }}
+            >
+              {formatMoney(tick)}
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="mt-12">
       <SectionHeading
-        title="Budget Comparison: Revised Estimates 2026 vs Approved 2025"
+        title="Budget Comparison: Revised Estimates 2026 vs. Approved 2025"
         description="Click on parts or sections to expand breakdown. Hover for details."
       />
 
-      <div className="relative">
+      {/* Mobile Layout */}
+      <div className="block lg:hidden">{renderMobileLayout()}</div>
+
+      {/* Desktop Layout */}
+      <div className="relative hidden lg:block">
         {/* Header with legend on the right */}
-        <div className="mb-2 flex items-center justify-between border-b pb-2 text-xs text-gray-500">
-          <div style={{ width: LABEL_WIDTH }} className="flex-shrink-0" />
-          <div className="flex items-center gap-6 text-gray-600">
+        <div className="mb-2 flex flex-col gap-2 border-b pb-2 text-xs text-gray-500 sm:flex-row sm:items-center sm:justify-between">
+          <div className="hidden sm:block" style={{ width: LABEL_WIDTH }} />
+          <div className="flex flex-wrap items-center gap-3 text-gray-600 sm:gap-6">
             <div className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full border-2 border-white bg-gray-600 shadow" />
-              <span>2025 Approved</span>
+              <div className="h-3 w-3 shrink-0 rounded-full border-2 border-white bg-gray-600 shadow" />
+              <span className="whitespace-nowrap">2025 Approved</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-un-blue/50" />
-              <span>2026 Proposed</span>
+              <div className="h-2 w-2 shrink-0 rounded-full bg-un-blue/50" />
+              <span className="whitespace-nowrap">2026 Proposed</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full border-2 border-white bg-un-blue shadow" />
-              <span>2026 Revised</span>
+              <div className="h-3 w-3 shrink-0 rounded-full border-2 border-white bg-un-blue shadow" />
+              <span className="whitespace-nowrap">2026 Revised</span>
             </div>
           </div>
         </div>
 
         {/* Rows */}
         {rows.map((row) => {
-          const indent = row.level * 20;
           const isExpanded = expanded.has(row.id);
           const minX = Math.min(row.approved2025, row.revised2026);
           const maxX = Math.max(row.approved2025, row.revised2026);
@@ -279,36 +579,39 @@ export default function BudgetLollipop({
             >
               {/* Label */}
               <div
-                className={`flex flex-shrink-0 items-center pr-2 text-xs ${isClickable ? "hover:text-un-blue" : ""} ${row.level === 0 ? "font-medium" : ""}`}
-                style={{ width: LABEL_WIDTH, paddingLeft: indent + 8 }}
+                className={`flex shrink-0 items-center pr-2 text-xs ${isClickable ? "hover:text-un-blue" : ""} ${row.level === 0 ? "font-medium" : ""} ${row.level === 2 ? "text-gray-500" : ""}`}
+                style={{
+                  width: LABEL_WIDTH,
+                  paddingLeft: row.level === 2 ? 30 : row.level * 16,
+                }}
               >
                 {row.hasChildren ? (
-                  <span className="inline-block w-4 flex-shrink-0 text-gray-400">
+                  <span className="inline-block w-4 shrink-0 text-gray-400">
                     {isExpanded ? "▼" : "▶"}
                   </span>
                 ) : (
-                  <span className="inline-block w-4 flex-shrink-0" />
+                  <span className="inline-block w-4 shrink-0" />
                 )}
                 {row.numeral && (
-                  <span className="w-7 flex-shrink-0">{row.numeral}.</span>
+                  <span className="mr-1 shrink-0">{row.numeral}.</span>
                 )}
                 <span className="truncate">{row.label}</span>
               </div>
 
               {/* Chart area */}
-              <div 
+              <div
                 className="relative h-full flex-1"
                 onMouseMove={(e) => handleMouseMove(e, row)}
                 onMouseLeave={() => setTooltip(null)}
               >
                 {/* Horizontal grid line */}
-                <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-100" />
+                <div className="absolute top-1/2 right-0 left-0 h-px bg-gray-100" />
 
                 {/* Tick lines */}
                 {ticks.map((tick) => (
                   <div
                     key={tick}
-                    className="absolute top-0 bottom-0 w-px bg-gray-100"
+                    className={`absolute top-0 bottom-0 w-px ${tick === 0 ? "bg-gray-300" : "bg-gray-100"}`}
                     style={{ left: `${scale(tick)}%` }}
                   />
                 ))}
@@ -329,9 +632,10 @@ export default function BudgetLollipop({
                     className="absolute top-1/2"
                     style={{
                       left: `${(scale(row.approved2025) + scale(row.revised2026)) / 2}%`,
-                      transform: variance < 0 
-                        ? "translate(-50%, -50%)"
-                        : "translate(-50%, -50%) rotate(180deg)",
+                      transform:
+                        variance < 0
+                          ? "translate(-50%, -50%)"
+                          : "translate(-50%, -50%) rotate(180deg)",
                     }}
                   >
                     <svg
@@ -340,10 +644,7 @@ export default function BudgetLollipop({
                       viewBox="0 0 10 10"
                       className="text-gray-300"
                     >
-                      <path
-                        d="M 0 5 L 9 1 L 9 9 Z"
-                        fill="currentColor"
-                      />
+                      <path d="M 0 5 L 9 1 L 9 9 Z" fill="currentColor" />
                     </svg>
                   </div>
                 )}
@@ -395,7 +696,7 @@ export default function BudgetLollipop({
 
         {/* X-axis labels */}
         <div className="mt-2 flex items-center text-xs text-gray-500">
-          <div style={{ width: LABEL_WIDTH }} className="flex-shrink-0" />
+          <div style={{ width: LABEL_WIDTH }} className="shrink-0" />
           <div className="relative h-4 flex-1">
             {ticks.map((tick) => (
               <span
@@ -410,7 +711,7 @@ export default function BudgetLollipop({
         </div>
       </div>
 
-      {/* Tooltip with SVG budget flow (DRY - same style as EntityModal) */}
+      {/* Tooltip with SVG budget flow (DRY - same style as EntityModal) - Desktop only */}
       {tooltip &&
         (() => {
           const varianceVs2025 =
@@ -427,8 +728,8 @@ export default function BudgetLollipop({
               : null;
           return (
             <div
-              className="pointer-events-none fixed z-50 w-72 rounded-lg border border-gray-200 bg-white px-3 py-3 text-sm shadow-lg"
-              style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
+              className="pointer-events-none fixed z-50 w-64 rounded-lg border border-gray-200 bg-white px-3 py-3 text-sm shadow-lg sm:w-72"
+              style={{ left: tooltip.x, top: tooltip.y + 12 }}
             >
               <p className="mb-3 font-medium text-gray-900">
                 {tooltip.row.numeral

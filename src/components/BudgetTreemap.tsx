@@ -95,51 +95,51 @@ function slice<T>(
     // Find optimal number of items per row (2-4 items)
     // Prefer fewer items per row if they're similar sizes
     let bestRowSize = 2;
-    
+
     // If items are relatively uniform, use more items per row
-    const maxItem = Math.max(...items.map(i => i.normalizedValue));
-    const minItem = Math.min(...items.map(i => i.normalizedValue));
+    const maxItem = Math.max(...items.map((i) => i.normalizedValue));
+    const minItem = Math.min(...items.map((i) => i.normalizedValue));
     const uniformity = minItem / maxItem;
-    
+
     if (uniformity > 0.5 && items.length >= 4) {
       bestRowSize = 3;
     } else if (uniformity > 0.7 && items.length >= 6) {
       bestRowSize = 4;
     }
-    
+
     // Create rows
-    const rows: typeof items[] = [];
+    const rows: (typeof items)[] = [];
     let currentRow: typeof items = [];
     let currentRowSum = 0;
     const targetRowSum = total / Math.ceil(items.length / bestRowSize);
-    
+
     for (let i = 0; i < items.length; i++) {
       currentRow.push(items[i]);
       currentRowSum += items[i].normalizedValue;
-      
-      const shouldEndRow = 
-        currentRow.length >= bestRowSize || 
+
+      const shouldEndRow =
+        currentRow.length >= bestRowSize ||
         i === items.length - 1 ||
         (currentRowSum >= targetRowSum * 0.8 && currentRow.length >= 2);
-      
+
       if (shouldEndRow) {
         rows.push([...currentRow]);
         currentRow = [];
         currentRowSum = 0;
       }
     }
-    
+
     if (rows.length > 1) {
       let currentY = y;
       const results: (Rect & { data: T })[] = [];
-      
-      rows.forEach(row => {
+
+      rows.forEach((row) => {
         const rowSum = row.reduce((sum, item) => sum + item.normalizedValue, 0);
         const rowHeight = height * (rowSum / total);
-        
+
         // Layout items horizontally in this row
         let currentX = x;
-        row.forEach(item => {
+        row.forEach((item) => {
           const itemWidth = width * (item.normalizedValue / rowSum);
           results.push({
             x: currentX,
@@ -150,10 +150,10 @@ function slice<T>(
           });
           currentX += itemWidth;
         });
-        
+
         currentY += rowHeight;
       });
-      
+
       return results;
     }
   }
@@ -182,25 +182,46 @@ function slice<T>(
     const leftHeight = height * (leftSum / total);
     return [
       ...slice(leftItems, x, y, width, leftHeight, forceMobileLayout),
-      ...slice(rightItems, x, y + leftHeight, width, height - leftHeight, forceMobileLayout),
+      ...slice(
+        rightItems,
+        x,
+        y + leftHeight,
+        width,
+        height - leftHeight,
+        forceMobileLayout,
+      ),
     ];
   }
 
   // Desktop: use aspect ratio-based decision
   const aspectRatio = width / height;
   const shouldSliceHorizontally = aspectRatio > 0.7;
-  
+
   if (shouldSliceHorizontally) {
     const leftWidth = width * (leftSum / total);
     return [
       ...slice(leftItems, x, y, leftWidth, height, forceMobileLayout),
-      ...slice(rightItems, x + leftWidth, y, width - leftWidth, height, forceMobileLayout),
+      ...slice(
+        rightItems,
+        x + leftWidth,
+        y,
+        width - leftWidth,
+        height,
+        forceMobileLayout,
+      ),
     ];
   } else {
     const leftHeight = height * (leftSum / total);
     return [
       ...slice(leftItems, x, y, width, leftHeight, forceMobileLayout),
-      ...slice(rightItems, x, y + leftHeight, width, height - leftHeight, forceMobileLayout),
+      ...slice(
+        rightItems,
+        x,
+        y + leftHeight,
+        width,
+        height - leftHeight,
+        forceMobileLayout,
+      ),
     ];
   }
 }
@@ -235,7 +256,7 @@ export default function BudgetTreemap({
       const width = window.innerWidth;
       const mobile = width < 640;
       setIsMobile(mobile);
-      
+
       let height;
       if (width < 640) {
         // Mobile: shorter height creates wider boxes for better label readability
@@ -245,16 +266,21 @@ export default function BudgetTreemap({
       } else {
         height = 1200;
       }
-      
-      console.log('🔍 Treemap layout update:', { width, mobile, height, parts: parts.length });
+
+      console.log("🔍 Treemap layout update:", {
+        width,
+        mobile,
+        height,
+        parts: parts.length,
+      });
       setTreemapHeight(height);
     };
-    
+
     updateLayout();
     setMounted(true);
-    
-    window.addEventListener('resize', updateLayout);
-    return () => window.removeEventListener('resize', updateLayout);
+
+    window.addEventListener("resize", updateLayout);
+    return () => window.removeEventListener("resize", updateLayout);
   }, [parts.length]);
 
   const formatBudget = (amount: number): string => {
@@ -301,9 +327,9 @@ export default function BudgetTreemap({
 
   if (!mounted) {
     return (
-      <div className="flex items-center justify-center h-[1200px] bg-gray-50">
+      <div className="flex h-[1200px] items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-un-blue border-r-transparent mb-2"></div>
+          <div className="mb-2 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-un-blue border-r-transparent"></div>
           <p className="text-sm text-gray-600">Loading treemap...</p>
         </div>
       </div>
@@ -312,7 +338,10 @@ export default function BudgetTreemap({
 
   if (parts.length === 0) {
     return (
-      <div className="flex items-center justify-center" style={{ height: `${treemapHeight}px` }}>
+      <div
+        className="flex items-center justify-center"
+        style={{ height: `${treemapHeight}px` }}
+      >
         <p className="text-lg text-gray-500">No budget data available</p>
       </div>
     );
@@ -320,7 +349,8 @@ export default function BudgetTreemap({
 
   // Calculate part heights with gaps
   const partGapPercent = (PART_GAP / treemapHeight) * 100;
-  const partHeights: { part: TreemapPart; startY: number; height: number }[] = [];
+  const partHeights: { part: TreemapPart; startY: number; height: number }[] =
+    [];
   let currentY = 0;
   parts.forEach((part, i) => {
     const partHeight = (part.totalBudget / totalBudget) * 100;
@@ -330,7 +360,7 @@ export default function BudgetTreemap({
 
   // Responsive thresholds for label display - optimized for readability
   const getThresholds = () => {
-    if (typeof window === 'undefined') return { showBudget: 12 };
+    if (typeof window === "undefined") return { showBudget: 12 };
     const width = window.innerWidth;
     // Only show budget info when box has sufficient space - requires both width AND height
     if (width < 640) return { showBudget: 8 }; // Mobile: need decent space
@@ -343,7 +373,7 @@ export default function BudgetTreemap({
   return (
     <div className="flex flex-col gap-2 lg:flex-row">
       {/* Mobile legend - always at top on small screens */}
-      <div className="block sm:hidden space-y-2 px-2 py-3 bg-gray-50 rounded">
+      <div className="block space-y-2 rounded bg-gray-50 px-2 py-3 sm:hidden">
         <div className="text-xs font-medium text-gray-700">Budget Sections</div>
         <div className="flex flex-wrap gap-x-3 gap-y-1.5">
           {partHeights.map(({ part }) => {
@@ -351,9 +381,12 @@ export default function BudgetTreemap({
             const numeral = getNumeral(part.part);
             const name = PART_SHORT_NAMES[part.part] || part.partName;
             return (
-              <div key={`mobile-${part.part}`} className="flex items-center gap-1.5">
+              <div
+                key={`mobile-${part.part}`}
+                className="flex items-center gap-1.5"
+              >
                 <div
-                  className="h-3 w-3 rounded shrink-0"
+                  className="h-3 w-3 shrink-0 rounded"
                   style={{ backgroundColor: colors.bg }}
                 />
                 <span className="text-xs" style={{ color: colors.bg }}>
@@ -367,7 +400,7 @@ export default function BudgetTreemap({
 
       {/* Treemap */}
       <div
-        className="relative w-full lg:flex-1 bg-gray-100 rounded overflow-hidden"
+        className="relative w-full overflow-hidden rounded bg-gray-100 lg:flex-1"
         style={{ height: `${treemapHeight}px` }}
       >
         {partHeights.map(({ part, startY, height }) => {
@@ -380,12 +413,19 @@ export default function BudgetTreemap({
             value: s.totalBudget,
             data: s,
           }));
-          const sectionRects = squarify<TreemapSection>(sectionItems, 0, 0, 100, 100, isMobile);
+          const sectionRects = squarify<TreemapSection>(
+            sectionItems,
+            0,
+            0,
+            100,
+            100,
+            isMobile,
+          );
 
           return (
             <div
               key={part.part}
-              className="absolute left-0 right-0"
+              className="absolute right-0 left-0"
               style={{
                 top: `${startY}%`,
                 height: `${height}%`,
@@ -396,7 +436,14 @@ export default function BudgetTreemap({
                 const entityItems = section.entities
                   .sort((a, b) => b.budget - a.budget)
                   .map((e) => ({ value: e.budget, data: e }));
-                const entityRects = squarify<TreemapEntity>(entityItems, 0, 0, 100, 100, isMobile);
+                const entityRects = squarify<TreemapEntity>(
+                  entityItems,
+                  0,
+                  0,
+                  100,
+                  100,
+                  isMobile,
+                );
 
                 return (
                   <div
@@ -411,8 +458,11 @@ export default function BudgetTreemap({
                   >
                     {entityRects.map((rect, i) => {
                       const isHovered = hoveredEntity === rect.data.id;
-                      const canShowBudget = rect.width > thresholds.showBudget && rect.height > thresholds.showBudget;
-                      const displayText = rect.data.abbreviation || rect.data.name;
+                      const canShowBudget =
+                        rect.width > thresholds.showBudget &&
+                        rect.height > thresholds.showBudget;
+                      const displayText =
+                        rect.data.abbreviation || rect.data.name;
 
                       return (
                         <div
@@ -423,19 +473,25 @@ export default function BudgetTreemap({
                             top: `${rect.y}%`,
                             width: `${rect.width}%`,
                             height: `${rect.height}%`,
-                            backgroundColor: isHovered ? colors.hover : colors.bg,
+                            backgroundColor: isHovered
+                              ? colors.hover
+                              : colors.bg,
                           }}
                           onClick={() => handleClick(rect.data)}
-                          onMouseEnter={() => !isMobile && setHoveredEntity(rect.data.id)}
-                          onMouseMove={(e) => !isMobile && handleMouseMove(e, rect.data)}
+                          onMouseEnter={() =>
+                            !isMobile && setHoveredEntity(rect.data.id)
+                          }
+                          onMouseMove={(e) =>
+                            !isMobile && handleMouseMove(e, rect.data)
+                          }
                           onMouseLeave={handleMouseLeave}
                         >
-                          <div className="h-full w-full overflow-hidden px-0.5 py-0 sm:px-1 sm:py-0.5 flex flex-col justify-start items-start">
-                            <div className="text-xs sm:text-sm leading-tight font-semibold text-white truncate w-full text-left">
+                          <div className="flex h-full w-full flex-col items-start justify-start overflow-hidden px-0.5 py-0 sm:px-1 sm:py-0.5">
+                            <div className="w-full truncate text-left text-xs leading-tight font-semibold text-white sm:text-sm">
                               {displayText}
                             </div>
                             {canShowBudget && (
-                              <div className="text-[10px] sm:text-xs leading-tight text-white/95 truncate w-full text-left">
+                              <div className="w-full truncate text-left text-[10px] leading-tight text-white/95 sm:text-xs">
                                 {formatBudget(rect.data.budget)}{" "}
                                 {formatVariance(
                                   rect.data.budgetItem[
@@ -458,13 +514,18 @@ export default function BudgetTreemap({
 
       {/* Desktop labels */}
       <div
-        className="relative w-60 shrink-0 hidden lg:block"
+        className="relative hidden w-60 shrink-0 lg:block"
         style={{ height: `${treemapHeight}px` }}
       >
         {partHeights.map(({ part, startY }) => {
           const colors = PART_COLORS[part.part] || PART_COLORS["Part I"];
           const isCompact = [
-            "Part IX", "Part X", "Part XI", "Part XII", "Part XIII", "Part XIV",
+            "Part IX",
+            "Part X",
+            "Part XI",
+            "Part XII",
+            "Part XIII",
+            "Part XIV",
           ].includes(part.part);
           const numeral = getNumeral(part.part);
           const name = PART_SHORT_NAMES[part.part] || part.partName;
@@ -478,7 +539,8 @@ export default function BudgetTreemap({
               <span className="w-6 font-medium">{numeral}.</span>
               <span className="font-medium">{name}</span>
               <span className="ml-3">
-                {formatBudget(part.totalBudget)} {formatVariance(part.varianceVs2025)}
+                {formatBudget(part.totalBudget)}{" "}
+                {formatVariance(part.varianceVs2025)}
               </span>
             </div>
           ) : (
@@ -491,7 +553,8 @@ export default function BudgetTreemap({
               <div>
                 <div className="font-medium">{name}</div>
                 <div className="mt-0.5">
-                  {formatBudget(part.totalBudget)} {formatVariance(part.varianceVs2025)}
+                  {formatBudget(part.totalBudget)}{" "}
+                  {formatVariance(part.varianceVs2025)}
                 </div>
               </div>
             </div>
@@ -507,30 +570,44 @@ export default function BudgetTreemap({
               setTooltip(null);
               setHoveredEntity(null);
             }}
-            className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-gray-100"
+            className="absolute top-2 right-2 rounded-full p-1.5 hover:bg-gray-100"
             aria-label="Close"
           >
-            <svg className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="h-4 w-4 text-gray-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
           <div className="pr-8">
-            <p className="text-sm font-medium text-gray-900 leading-tight">
+            <p className="text-sm leading-tight font-medium text-gray-900">
               {tooltip.entity.entityName || tooltip.entity.name}
             </p>
             {tooltip.entity.abbreviation && (
-              <p className="text-xs text-gray-600 mt-0.5">{tooltip.entity.abbreviation}</p>
+              <p className="mt-0.5 text-xs text-gray-600">
+                {tooltip.entity.abbreviation}
+              </p>
             )}
-            <p className="text-xs text-gray-500 mt-2">{tooltip.entity.partName}</p>
+            <p className="mt-2 text-xs text-gray-500">
+              {tooltip.entity.partName}
+            </p>
             <p className="text-xs text-gray-500">
               Section {tooltip.entity.section}: {tooltip.entity.sectionName}
             </p>
-            <p className="text-sm font-medium text-gray-900 mt-2">
+            <p className="mt-2 text-sm font-medium text-gray-900">
               {formatBudget(tooltip.entity.budget)}
             </p>
             <button
               onClick={() => onEntityClick(tooltip.entity)}
-              className="mt-3 w-full py-2 px-4 bg-un-blue text-white text-sm font-medium rounded hover:bg-un-blue/90"
+              className="mt-3 w-full rounded bg-un-blue px-4 py-2 text-sm font-medium text-white hover:bg-un-blue/90"
             >
               View Details
             </button>
@@ -547,17 +624,21 @@ export default function BudgetTreemap({
             top: Math.min(tooltip.y + 12, window.innerHeight - 200),
           }}
         >
-          <p className="text-sm font-medium text-gray-900 leading-tight">
+          <p className="text-sm leading-tight font-medium text-gray-900">
             {tooltip.entity.entityName || tooltip.entity.name}
           </p>
           {tooltip.entity.abbreviation && (
-            <p className="text-xs text-gray-600 mt-0.5">{tooltip.entity.abbreviation}</p>
+            <p className="mt-0.5 text-xs text-gray-600">
+              {tooltip.entity.abbreviation}
+            </p>
           )}
-          <p className="text-xs text-gray-500 mt-1">{tooltip.entity.partName}</p>
+          <p className="mt-1 text-xs text-gray-500">
+            {tooltip.entity.partName}
+          </p>
           <p className="text-xs text-gray-500">
             Section {tooltip.entity.section}: {tooltip.entity.sectionName}
           </p>
-          <p className="text-xs font-medium text-gray-700 mt-1">
+          <p className="mt-1 text-xs font-medium text-gray-700">
             {formatBudget(tooltip.entity.budget)}
           </p>
         </div>
