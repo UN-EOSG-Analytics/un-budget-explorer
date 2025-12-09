@@ -475,7 +475,9 @@ export default function BudgetTreemap({
       >
         {partHeights.map(({ part, startY, height }) => {
           const colors = PART_COLORS[part.part] || PART_COLORS["Part I"];
-          const sections = part.sections.filter((s) => s.entities.length > 0);
+          const sections = part.sections
+            .filter((s) => s.entities.length > 0)
+            .sort((a, b) => b.totalBudget - a.totalBudget);
 
           if (sections.length === 0) return null;
 
