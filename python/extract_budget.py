@@ -128,8 +128,9 @@ def parse_paragraph(text):
     """Parse paragraph prefix and determine hierarchy level."""
     patterns = [
         (r'^(\d+)\.\t(.+)$', 0),           # "92.\t..." → level 0
-        (r'^\(([ivx]+)\)\t(.+)$', 2),      # "(i)\t..." → level 2 (roman numerals, check first)
-        (r'^\(([a-z])\)\t(.+)$', 1),       # "(a)\t..." → level 1 (letters)
+        (r'^\(([ivx]+)\)\t(.+)$', 2),      # "(i)\t..." → level 2 (roman numerals in parens)
+        (r'^\(([a-z])\)\t(.+)$', 1),       # "(a)\t..." → level 1 (letters in parens)
+        (r'^([a-z])\.\t(.+)$', 3),         # "a.\t..." → level 3 (letters with period, deeper nesting)
     ]
     for pat, level in patterns:
         m = re.match(pat, text, re.DOTALL)

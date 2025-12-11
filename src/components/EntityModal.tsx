@@ -207,7 +207,7 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
   };
 
   const renderNarrative = (n: Narrative, i: number) => {
-    const indent = n.level * 24;
+    const indent = (n.level ?? 0) * 24;
     return (
       <div
         key={i}
@@ -215,11 +215,13 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
         style={{ marginLeft: indent }}
       >
         <div className="flex gap-3">
-          <div className="shrink-0">
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-un-blue text-xs font-medium text-white">
-              {n.prefix}
-            </span>
-          </div>
+          {n.prefix && (
+            <div className="shrink-0">
+              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-un-blue text-xs font-medium text-white">
+                {n.prefix}
+              </span>
+            </div>
+          )}
           <p className="flex-1 text-sm leading-relaxed text-gray-700">
             {formatNarrativeText(n.text)}
           </p>
