@@ -1183,9 +1183,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":2.8,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Least developed countries, landlocked developing countries and small island developing States",
-    "abbreviation":null,
-    "entity_name":null
+    "chapter_title":"Office of the High Representative for the Least Developed Countries, Landlocked Developing Countries and Small Island Developing States",
+    "abbreviation":"UN-OHRLLS",
+    "entity_name":"Office of the High Representative for the Least Developed Countries, Landlocked Developing Countries and Small Island Developing States"
   },
   {
     "row_type":"section_total",
@@ -1667,9 +1667,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"International protection, durable solutions and assistance to refugees",
-    "abbreviation":null,
-    "entity_name":null
+    "chapter_title":"Office of the United Nations High Commissioner for Refugees",
+    "abbreviation":"UNHCR",
+    "entity_name":"Office of the United Nations High Commissioner for Refugees"
   },
   {
     "row_type":"section_total",
@@ -1689,9 +1689,9 @@
     "Variance (excluding resources redeployed for consolidation) – Compared with 2026 proposed programme budget (percentage)":0.0,
     "Transitional capacities":0.0,
     "footnotes":null,
-    "chapter_title":"Palestine refugees",
-    "abbreviation":null,
-    "entity_name":null
+    "chapter_title":"United Nations Relief and Works Agency for Palestine Refugees in the Near East",
+    "abbreviation":"UNRWA",
+    "entity_name":"United Nations Relief and Works Agency for Palestine Refugees in the Near East"
   },
   {
     "row_type":"section_total",
