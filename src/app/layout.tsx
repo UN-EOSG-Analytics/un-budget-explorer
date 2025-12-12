@@ -20,6 +20,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
   },
+  other: {
+    "msvalidate.01": "1C1ECD9B1AF4185D3B834A1878929E70",
+  },
 };
 
 export const viewport: Viewport = {
