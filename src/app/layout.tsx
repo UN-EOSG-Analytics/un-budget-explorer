@@ -22,6 +22,8 @@ export const metadata: Metadata = {
   },
   other: {
     "msvalidate.01": "1C1ECD9B1AF4185D3B834A1878929E70",
+    "author": "Programme Budget Explorer",
+    "publisher": "Programme Budget Explorer",
   },
 };
 
