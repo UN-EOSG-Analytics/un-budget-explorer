@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+export const dynamic = "force-static";
+
 const baseUrl = "https://programmebudget.info";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -10,4 +12,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/privacy`, lastModified: new Date(), priority: 0.3 },
   ];
 }
+
 
