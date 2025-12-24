@@ -49,9 +49,10 @@ interface Rect {
 const PART_GAP = 2;
 
 // Format variance with arrow
+// Use \uFE0E (variation selector-15) to force text rendering instead of emoji on iOS
 const formatVariance = (value: number | null): string => {
   if (value === null || value === undefined) return "";
-  const arrow = value > 0 ? "↗" : value < 0 ? "↘" : "→";
+  const arrow = value > 0 ? "↗\uFE0E" : value < 0 ? "↘\uFE0E" : "→\uFE0E";
   return `${arrow}${Math.abs(value).toFixed(1)}%`;
 };
 

@@ -296,14 +296,14 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
                   {formatMoney(b["2025 approved"])}
                 </p>
               </div>
-              <span className="text-gray-400">→</span>
+              <span className="text-gray-400">→&#xFE0E;</span>
               <div className="flex-1 rounded-lg bg-gray-100 px-3 py-2">
                 <p className="text-xs text-gray-500">2026 Proposed</p>
                 <p className="text-sm font-semibold text-gray-900">
                   {formatMoney(b["2026 proposed programme budget"])}
                 </p>
               </div>
-              <span className="text-gray-400">→</span>
+              <span className="text-gray-400">→&#xFE0E;</span>
               <div className="flex-1 rounded-lg border border-un-blue/20 bg-un-blue/10 px-3 py-2">
                 <p className="text-xs text-un-blue">2026 Revised</p>
                 <p className="text-sm font-bold text-un-blue">
@@ -482,14 +482,14 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
                                   {formatMoney(row.approved)}
                                 </p>
                               </div>
-                              <span className="text-gray-400">→</span>
+                              <span className="text-gray-400">→&#xFE0E;</span>
                               <div className="flex-1 rounded bg-gray-100 px-1.5 py-0.5">
                                 <p className="text-gray-500">Proposed</p>
                                 <p className="font-semibold text-gray-900">
                                   {formatMoney(row.proposed)}
                                 </p>
                               </div>
-                              <span className="text-gray-400">→</span>
+                              <span className="text-gray-400">→&#xFE0E;</span>
                               <div className="flex flex-1 flex-col gap-0.5">
                                 <div
                                   className={`rounded px-1.5 py-0.5 ${row.consolidation < 0 ? "bg-red-50" : row.consolidation > 0 ? "bg-green-50" : "bg-gray-50"}`}
@@ -516,7 +516,7 @@ export default function EntityModal({ entity, onClose }: EntityModalProps) {
                                   </p>
                                 </div>
                               </div>
-                              <span className="text-gray-400">→</span>
+                              <span className="text-gray-400">→&#xFE0E;</span>
                               <div className="flex-1 rounded border border-un-blue/20 bg-un-blue/10 px-1.5 py-0.5">
                                 <p className="text-un-blue">Revised</p>
                                 <p className="font-bold text-un-blue">

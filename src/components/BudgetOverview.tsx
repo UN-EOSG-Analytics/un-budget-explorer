@@ -154,7 +154,7 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
               {formatMoney(b["2025 approved"])}
             </p>
           </a>
-          <span className="text-gray-400">→</span>
+          <span className="text-gray-400">→&#xFE0E;</span>
           <a
             href="https://www.un.org/en/ga/fifth/80/ppb2026.shtml"
             target="_blank"
@@ -166,7 +166,7 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
               {formatMoney(b["2026 proposed programme budget"])}
             </p>
           </a>
-          <span className="text-gray-400">→</span>
+          <span className="text-gray-400">→&#xFE0E;</span>
           <a
             href="https://docs.un.org/en/A/80/400"
             target="_blank"
@@ -178,7 +178,7 @@ export default function BudgetOverview({ grandTotal }: BudgetOverviewProps) {
               {formatMoney(b["2026 revised estimate"])}
             </p>
           </a>
-          <span className="text-gray-400">→</span>
+          <span className="text-gray-400">→&#xFE0E;</span>
           <div className="flex-1 rounded-lg border-2 border-dashed border-gray-400 bg-gray-50 px-3 py-2 text-center">
             <p className="text-xs text-gray-500">2026 Approved</p>
             <p className="text-base font-semibold text-gray-400">TBD</p>

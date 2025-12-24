@@ -394,7 +394,7 @@ export default function BudgetLollipop({
                 <div className="mb-1 flex items-start justify-between gap-2">
                   <div className="flex items-start gap-2">
                     <span className="mt-0.5 w-4 shrink-0 text-gray-400">
-                      {row.hasChildren && (isExpanded ? "▼" : "▶")}
+                      {row.hasChildren && (isExpanded ? "▼\uFE0E" : "▶\uFE0E")}
                     </span>
                     <div>
                       <h3 className="text-lg font-semibold">
@@ -402,7 +402,7 @@ export default function BudgetLollipop({
                       </h3>
                       <div className="mt-1 flex flex-wrap gap-3 text-xs text-gray-600">
                         <span>2025: {formatMoney(row.approved2025)}</span>
-                        <span>→</span>
+                        <span>→&#xFE0E;</span>
                         <span className="font-medium text-un-blue">
                           2026: {formatMoney(row.revised2026)}
                         </span>
@@ -447,7 +447,7 @@ export default function BudgetLollipop({
                             <div className="mb-1 flex items-start gap-2">
                               <span className="mt-0.5 w-4 shrink-0 text-sm text-gray-400">
                                 {sectionRow.hasChildren &&
-                                  (sectionExpanded ? "▼" : "▶")}
+                                  (sectionExpanded ? "▼\uFE0E" : "▶\uFE0E")}
                               </span>
                               <div>
                                 <h4 className="text-sm font-medium text-gray-900">
@@ -457,7 +457,7 @@ export default function BudgetLollipop({
                                   <span>
                                     {formatMoney(sectionRow.approved2025)}
                                   </span>
-                                  <span>→</span>
+                                  <span>→&#xFE0E;</span>
                                   <span className="font-medium text-un-blue">
                                     {formatMoney(sectionRow.revised2026)}
                                   </span>
@@ -514,7 +514,7 @@ export default function BudgetLollipop({
                                                 entityRow.approved2025,
                                               )}
                                             </span>
-                                            <span>→</span>
+                                            <span>→&#xFE0E;</span>
                                             <span className="font-medium text-un-blue">
                                               {formatMoney(
                                                 entityRow.revised2026,
@@ -620,7 +620,7 @@ export default function BudgetLollipop({
               >
                 {row.hasChildren ? (
                   <span className="inline-block w-4 shrink-0 text-gray-400">
-                    {isExpanded ? "▼" : "▶"}
+                    {isExpanded ? "▼\uFE0E" : "▶\uFE0E"}
                   </span>
                 ) : (
                   <span className="inline-block w-4 shrink-0" />
@@ -798,14 +798,14 @@ export default function BudgetLollipop({
                     {formatMoney(tooltip.row.approved2025)}
                   </p>
                 </div>
-                <span className="text-xs text-gray-400">→</span>
+                <span className="text-xs text-gray-400">→&#xFE0E;</span>
                 <div className="flex-1 rounded bg-gray-100 px-2 py-1">
                   <p className="text-[10px] text-gray-500">Proposed</p>
                   <p className="text-xs font-semibold text-gray-900">
                     {formatMoney(tooltip.row.proposed2026)}
                   </p>
                 </div>
-                <span className="text-xs text-gray-400">→</span>
+                <span className="text-xs text-gray-400">→&#xFE0E;</span>
                 <div className="flex-1 rounded border border-un-blue/20 bg-un-blue/10 px-2 py-1">
                   <p className="text-[10px] text-un-blue">Revised</p>
                   <p className="text-xs font-bold text-un-blue">
